@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Server.BL\Server.BL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
