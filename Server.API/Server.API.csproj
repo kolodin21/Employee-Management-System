@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Server.BL\Server.BL.csproj" />
+  </ItemGroup>
+
 </Project>
