@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Server.DAL.Repository;
+namespace Server.DAL.Configuration;
 
-public class DatabaseConfig 
+public class DatabaseConfig
 {
     private static readonly IConfiguration Configuration;
 
