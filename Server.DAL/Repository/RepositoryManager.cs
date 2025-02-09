@@ -1,6 +1,6 @@
 ﻿namespace Server.DAL.Repository
 {
-    public class RepositoryManager
+    public abstract class RepositoryManager
     {
     }
 }
