@@ -1,6 +1,4 @@
-﻿using Models;
-
-namespace Server.DAL.Repository;
+﻿namespace Server.DAL.Repository;
 
 public class DepartmentRepository
 {
@@ -10,7 +8,7 @@ public class DepartmentRepository
         
     }
 
-    public async Task<IEnumerable<Department>> GetDepartmentsAsync()
+    public async Task<IEnumerable<DepartmentDto>> GetDepartmentsAsync()
     {
         return null;
     }
