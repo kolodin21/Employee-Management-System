@@ -9,10 +9,6 @@ public class DepartmentRepository
     {
         
     }
-
-    {
-        return null;
-    }
     
     public async Task UpdateDepartmentAsync(int id, string name)
     {
