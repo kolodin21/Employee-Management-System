@@ -8,15 +8,23 @@
         Dismissed     //Уволен
     }
 
+    // Учёт отпусков и больничных
     public class Leave 
     {
-        public int Id { get; set; }             // Id записи
-        public int EmployeeId { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string? Patronymic { get; set; } // Может быть null
-        public LeaveType LeaveType { get; set; } 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int Id { get; set; }              // Id записи
+        public int EmployeeId { get; set; }      // Id сотрудника
+        public LeaveType LeaveType { get; set; } // Тип отсутствия 
+        public DateTime StartDate { get; set; }  // дата начала.
+        public DateTime EndDate { get; set; }    // дата окончания.
+    }
+
+    public class LeaveDto : Person
+    {
+        public int LeaveId { get; set; }         // Id записи
+        public LeaveType LeaveType { get; set; } // Тип отсутствия 
+        public DateTime StartDate { get; set; }  // дата начала.
+        public DateTime EndDate { get; set; }    // дата окончания.
+
     }
 }
+ 
