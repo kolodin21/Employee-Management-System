@@ -1,6 +1,4 @@
-﻿using Models;
-
-namespace Server.DAL.Repository;
+﻿namespace Server.DAL.Repository;
 
 public class LeaveRepository
 {

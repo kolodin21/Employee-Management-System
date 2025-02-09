@@ -1,16 +1,14 @@
-﻿using Models;
-
-namespace Server.DAL.Repository;
+﻿namespace Server.DAL.Repository;
 
 public class ReportSearchRepository
 {
     
-    public async Task<IEnumerable<Report>> GenerateEmployeeReportAsync(int employeeId)
+    public async Task<IEnumerable<ReportDto>> GenerateEmployeeReportAsync(int employeeId)
     {
         return null;
     }
     
-    public async Task<IEnumerable<Report>> GenerateDepartmentReportAsync(int departmentId)
+    public async Task<IEnumerable<ReportDto>> GenerateDepartmentReportAsync(int departmentId)
     {
         return null;
     }
