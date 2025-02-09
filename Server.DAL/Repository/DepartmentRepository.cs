@@ -10,7 +10,6 @@ public class DepartmentRepository
         
     }
 
-    public async Task<IEnumerable<Department>> GetDepartmentsAsync()
     {
         return null;
     }
