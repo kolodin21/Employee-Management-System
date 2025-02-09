@@ -14,11 +14,9 @@ public class DatabaseConfig
             .Build();
     }
 
-    public static string ConnectionString => Configuration["ConnectionString:DefaultConnection"]
+    public static string ConnectionString => Configuration["ConnectionString:TestConnection"]
                                              ?? throw new InvalidOperationException(
                                                  "ConnectionStrings not found in configuration.");
 
-    public static string DatabaseSchema => Configuration["TableSchema"] ??
-                                           throw new InvalidOperationException(
-                                               "ConnectionStrings not found in configuration.");
+    
 }
