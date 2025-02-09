@@ -1,4 +1,6 @@
-﻿namespace Server.DAL.Repository;
+﻿using Models;
+
+namespace Server.DAL.Repository;
 
 public class PositionRepository
 {
@@ -7,7 +9,7 @@ public class PositionRepository
         
     }
 
-    public async Task<IEnumerable<PositionDto>> GetPositionsAsync()
+    public async Task<IEnumerable<Position>> GetPositionsAsync()
     {
         return null;
     }
