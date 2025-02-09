@@ -1,8 +1,18 @@
 ﻿<Window x:Class="Client.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:vm="clr-namespace:Client.GUI.ViewModel"
 
-    </Grid>
+        Title="MainWindow" 
+        Height="450" 
+        Width="800"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+        <ContentPresenter Content="{Binding CurrentContent}" />
+
 </Window>
