@@ -106,8 +106,9 @@
 ### Employees
 Хранит основную информацию о сотрудниках:
 - `Id` — уникальный идентификатор сотрудника.
-- `FirstName` — имя сотрудника.
-- `LastName` — фамилия сотрудника.
+- `Name` — имя сотрудника.
+- `Surname` — фамилия сотрудника.
+- `Patronymic` — отчество если имеется 
 - `DepartmentId` — ссылка на отдел.
 - `PositionId` — ссылка на должность.
 - `HireDate` — дата приема на работу.
@@ -164,13 +165,11 @@
 - `GetLeaveBalanceAsync(int employeeId)` — получение остатка отпускных дней сотрудника.
 - `CancelLeaveAsync(int leaveId)` — отмена отпуска или больничного.
 
-### EmployeeSearchService
-- `SearchEmployeesAsync` — поиск сотрудников по имени или фамилии.
-
-### ReportService
+### ReportSearchRepository
 - `GenerateEmployeeReportAsync(int employeeId)` — отчет по конкретному сотруднику.
 - `GenerateDepartmentReportAsync(int departmentId)` — отчет по сотрудникам отдела.
 - `GenerateLeaveStatisticsAsync(DateTime start, DateTime end)` — статистика по отпускам и больничным за период.
+- `SearchEmployeesAsync` — поиск сотрудников по имени или фамилии.
 
 ⚠️ **Замечание:** Это примерный скелет. Если есть пожелания,замечания или поправки вносите коррективы
 

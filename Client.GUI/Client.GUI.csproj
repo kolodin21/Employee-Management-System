@@ -30,8 +30,6 @@
 
   <ItemGroup>
     <Folder Include="View\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Components\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties configuration_4appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
