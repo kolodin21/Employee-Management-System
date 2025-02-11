@@ -12,4 +12,3 @@ var Logger = LogManager.GetCurrentClassLogger();
 Logger.Info("Приложение запущено");
 
 app.Run();
-
