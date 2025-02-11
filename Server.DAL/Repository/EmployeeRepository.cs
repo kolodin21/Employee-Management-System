@@ -5,9 +5,9 @@ namespace Server.DAL.Repository;
 public class EmployeeRepository
 {
 
-    public async Task AddEmployeeAsync(Employee employee)
+    public async Task<bool> AddEmployeeAsync(Employee employee)
     {
-
+        return true;
     }
 
     public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync()
