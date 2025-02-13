@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
-using Server.DAL.Repository;
-
-namespace Server.BL
+﻿namespace Server.BL
 {
     public class DepartmentService: ServiceBase
     {
