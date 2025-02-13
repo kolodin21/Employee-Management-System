@@ -25,12 +25,12 @@ public class EmployeeRepository
         return null;
     }
 
-    public async Task UpdateEmployeeAsync(Employee employee)
+    public async Task<bool> UpdateEmployeeAsync(Employee employee)
     {
 
     }
 
-    public async Task DeleteEmployeeAsync(int employeeId)
+    public async Task<bool> DeleteEmployeeAsync(int employeeId)
     {
 
     }

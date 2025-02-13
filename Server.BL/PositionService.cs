@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
+﻿using Models;
 
 namespace Server.BL
 {
     public class PositionService: ServiceBase
     {
         public async Task<bool> AddPositionAsync(string name) =>
-            await repositoryManager.PositionRepository.AddPositionAsync(name);
+            await RepositoryManager.PositionRepository.AddPositionAsync(name);
         
 
         public async Task<IEnumerable<Position>> GetPositionsAsync() =>
-            await repositoryManager.PositionRepository.GetPositionsAsync();
+            await RepositoryManager.PositionRepository.GetPositionsAsync();
        
 
         public async Task<bool> UpdatePositionAsync(int id, string name) =>
-            await repositoryManager.PositionRepository.UpdatePositionAsync(id, name);
+            await RepositoryManager.PositionRepository.UpdatePositionAsync(id, name);
         
 
         public async Task<bool> DeletePositionAsync(int positionId) =>
-            await repositoryManager.PositionRepository.DeletePositionAsync(positionId);
+            await RepositoryManager.PositionRepository.DeletePositionAsync(positionId);
         
     }
 }
