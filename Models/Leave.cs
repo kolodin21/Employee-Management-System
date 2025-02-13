@@ -3,7 +3,7 @@
     //Тип отсутствия
     public enum LeaveType
     {
-        Vacation = 1, //Отпуск
+        Vacation, //Отпуск
         Medical,      //Больничный
         Dismissed     //Уволен
     }
