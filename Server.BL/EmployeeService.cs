@@ -26,11 +26,11 @@ namespace Server.BL
             await repositoryManager.EmployeeRepository.GetEmployeesByDepartmentAsync(departmentId);
        
 
-        public async Task UpdateEmployeeAsync(Employee employee) =>
+        public async Task<bool> UpdateEmployeeAsync(Employee employee) =>
             await repositoryManager.EmployeeRepository.UpdateEmployeeAsync(employee);
        
 
-        public async Task DeleteEmployeeAsync(int employeeId) =>
+        public async Task<bool> DeleteEmployeeAsync(int employeeId) =>
             await repositoryManager.EmployeeRepository.DeleteEmployeeAsync(employeeId);
     }
 }

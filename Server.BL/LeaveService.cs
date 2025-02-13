@@ -9,7 +9,7 @@ namespace Server.BL
 {
     public class LeaveService: ServiceBase
     {
-        public async Task AddLeaveAsync(Leave leave) =>
+        public async Task<bool> AddLeaveAsync(Leave leave) =>
             await repositoryManager.LeaveRepository.AddLeaveAsync(leave);
         
 
@@ -25,7 +25,7 @@ namespace Server.BL
             await repositoryManager.LeaveRepository.GetLeaveBalanceAsync(employeeId);
         
 
-        public async Task CancelLeaveAsync(int leaveId) =>
+        public async Task<bool> CancelLeaveAsync(int leaveId) =>
             await repositoryManager.LeaveRepository.CancelLeaveAsync(leaveId);
         
     }

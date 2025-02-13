@@ -5,12 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-
 app.UseHttpsRedirection();
 
 var Logger = LogManager.GetCurrentClassLogger();
 
-Logger.Info("Ïðèëîæåíèå çàïóùåíî");
+Logger.Info("ÃÃ°Ã¨Ã«Ã®Ã¦Ã¥Ã­Ã¨Ã¥ Ã§Ã Ã¯Ã³Ã¹Ã¥Ã­Ã®");
 
 var employeeService = new EmployeeService();
 var departmentService = new DepartmentService();
@@ -59,4 +58,5 @@ app.MapGet("/reports", async (DateTime start, DateTime end) => await reportSearc
 app.MapGet("reports/search", async (string lastName, string firstName) => await reportSearchService.SearchEmployeesAsync(lastName,firstName));
 #endregion
 
+=======
 app.Run();

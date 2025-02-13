@@ -14,11 +14,11 @@ namespace Server.BL
             await repositoryManager.DepartmentRepository.AddDepartmentAsync(name);
        
 
-        public async Task UpdateDepartmentAsync(int id, string name) =>
+        public async Task<bool> UpdateDepartmentAsync(int id, string name) =>
             await repositoryManager.DepartmentRepository.UpdateDepartmentAsync(id, name);
 
 
-        public async Task DeleteDepartmentAsync(int departmentId) =>
+        public async Task<bool> DeleteDepartmentAsync(int departmentId) =>
             await repositoryManager.DepartmentRepository.DeleteDepartmentAsync(departmentId);
         
     }
