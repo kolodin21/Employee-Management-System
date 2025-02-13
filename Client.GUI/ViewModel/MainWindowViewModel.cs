@@ -8,6 +8,7 @@ namespace Client.GUI.ViewModel
     {
         public static string MainMenu => "Главное меню";
         public static string Authorization => "Авторизация";
+        public static string AddEmployee => "Добавление сотрудника";
 
     }
 
