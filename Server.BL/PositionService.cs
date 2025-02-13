@@ -9,7 +9,7 @@ namespace Server.BL
 {
     public class PositionService: ServiceBase
     {
-        public async Task AddPositionAsync(string name) =>
+        public async Task<bool> AddPositionAsync(string name) =>
             await repositoryManager.PositionRepository.AddPositionAsync(name);
         
 
@@ -17,11 +17,11 @@ namespace Server.BL
             await repositoryManager.PositionRepository.GetPositionsAsync();
        
 
-        public async Task UpdatePositionAsync(int id, string name) =>
+        public async Task<bool> UpdatePositionAsync(int id, string name) =>
             await repositoryManager.PositionRepository.UpdatePositionAsync(id, name);
         
 
-        public async Task DeletePositionAsync(int positionId) =>
+        public async Task<bool> DeletePositionAsync(int positionId) =>
             await repositoryManager.PositionRepository.DeletePositionAsync(positionId);
         
     }
