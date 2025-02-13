@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client.GUI.View
+namespace Client.GUI.View.LogInSystem
 {
     /// <summary>
-    /// Логика взаимодействия для MainPageView.xaml
+    /// Логика взаимодействия для AuthorizationPageView.xaml
     /// </summary>
-    public partial class MainPageView : UserControl
+    public partial class AuthorizationPageView : UserControl
     {
-        public MainPageView()
+        public AuthorizationPageView()
         {
             InitializeComponent();
         }

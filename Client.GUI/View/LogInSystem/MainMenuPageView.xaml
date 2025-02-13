@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Client.GUI.View.MainMenuPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:logInSystem="clr-namespace:Client.GUI.ViewModel.LogInSystem"
+             Height="300" 
+             Width="350">
+    
+    <UserControl.DataContext>
+        <logInSystem:MainMenuPageViewModel/>
+    </UserControl.DataContext>
+
+
+    <StackPanel Background="AntiqueWhite">
+
+        <Label Content="Система управления персоналом"
+               Style="{StaticResource Heading}"/>
+
+        <Label Content="Вход в систему"
+               Style="{StaticResource LabelMenuStyle}"/>
+
+        <Button Content="Авторизация"
+                Command="{Binding LoginCommand}"
+                Style="{StaticResource ButtonMenuStyle}"/>
+
+        <Button Content="Регистрация"
+                Command="{Binding RegistrationCommand}"
+                Style="{StaticResource ButtonMenuStyle}"/>
+
+ <Button Content="Выход"
+                Command="{Binding ExitCommand}"
+                Style="{StaticResource ButtonMenuStyle}"/>
+
+    </StackPanel>
+</UserControl>

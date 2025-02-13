@@ -7,20 +7,41 @@
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="10" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="5">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="LightBlue"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- Стиль для кнопки меню-->
     <Style x:Key="ButtonMenuStyle" TargetType="Button"
         BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Background" Value="LightBlue" />
+        <Setter Property="Background" Value="DarkSeaGreen"/>
+        <Setter Property="Width" Value="250"/>
+        <Setter Property="Height" Value="50"/>
     </Style>
 
-    <!-- Стиль для другой кнопки -->
+    <!-- Стиль для другой кнопки --><!--
     <Style x:Key="ButtonStyle1" TargetType="Button" 
         BasedOn="{StaticResource BaseButtonStyle}">
         <Setter Property="Background" Value="BurlyWood" />
-    </Style>
+    </Style>-->
 
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using ReactiveUI;
 using System.Windows.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Client.GUI.ViewModel
 {
@@ -11,6 +12,14 @@ namespace Client.GUI.ViewModel
 
     public abstract class ViewModelBase : ReactiveObject, IContentChanger
     {
+        //DI провайдер
+        protected static IServiceProvider ServiceProvider { get; private set; } = null!;
+
+        public static void Initialize(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+        }
+
         #region IContentChanger
 
         //Событие для отображения нужной страницы
@@ -32,6 +41,10 @@ namespace Client.GUI.ViewModel
         }
         #endregion
 
+
+        //Получение выбранной страницы
+        protected T GetPage<T>() where T : notnull =>
+            ServiceProvider.GetRequiredService<T>();
 
         //Закрытие приложения 
         protected static void ExecExit()

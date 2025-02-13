@@ -3,16 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Client.GUI.ViewModel"
 
-        Title="MainWindow" 
-        Height="450" 
-        Width="800"
+        Title="{Binding Title}"
+        Height="350" 
+        Width="400"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
+
     </Window.DataContext>
-
         <ContentPresenter Content="{Binding CurrentContent}" />
-
 </Window>

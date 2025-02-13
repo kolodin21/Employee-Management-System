@@ -5,6 +5,10 @@ namespace Client.GUI.Components
 {
     public partial class InputControl : UserControl
     {
+        public InputControl()
+        {
+            InitializeComponent();
+        }
 
         public static readonly DependencyProperty LabelProperty =
             DependencyProperty.Register(nameof(Label), typeof(string), typeof(InputControl));
@@ -34,9 +38,5 @@ namespace Client.GUI.Components
             set => SetValue(IsReadOnlyProperty, value);
         }
 
-        public InputControl()
-        {
-            InitializeComponent();
-        }
     }
 }

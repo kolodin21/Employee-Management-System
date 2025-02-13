@@ -1,6 +1,8 @@
 ﻿using NLog;
 using ReactiveUI.Fody.Helpers;
 using System.Windows.Controls;
+using Client.GUI.View;
+using Client.GUI.ViewModel.LogInSystem;
 
 namespace Client.GUI.ViewModel
 {
@@ -13,7 +15,7 @@ namespace Client.GUI.ViewModel
     }
 
 
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -24,8 +26,22 @@ namespace Client.GUI.ViewModel
         public MainWindowViewModel()
         {
             Title = NamePage.MainMenu;
-        }
+            CurrentContent = GetPage<MainMenuPageView>();
 
+            InitializeAndSubscribeToContentChanges<MainMenuPageViewModel>();
+            InitializeAndSubscribeToContentChanges<AuthorizationPageViewModel>();
+
+        }
+        private void InitializeAndSubscribeToContentChanges<TViewModel>()
+            where TViewModel : class
+        {
+            var viewModel = GetPage<TViewModel>();
+            SubscribeToContentChanged(viewModel, (newContent, newTitle) =>
+            {
+                CurrentContent = newContent;
+                Title = newTitle;
+            });
+        }
 
     }
 }
