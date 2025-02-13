@@ -5,23 +5,23 @@ namespace Server.BL
     public class LeaveService: ServiceBase
     {
         public async Task<bool> AddLeaveAsync(Leave leave) =>
-            await repositoryManager.LeaveRepository.AddLeaveAsync(leave);
+            await RepositoryManager.LeaveRepository.AddLeaveAsync(leave);
         
 
         public async Task<IEnumerable<LeaveDto>> GetLeavesByEmployeeAsync(int employeeId) =>
-            await repositoryManager.LeaveRepository.GetLeavesByEmployeeAsync(employeeId);
+            await RepositoryManager.LeaveRepository.GetLeavesByEmployeeAsync(employeeId);
         
 
         public async Task<IEnumerable<LeaveDto>> GetLeavesByDateRangeAsync(DateTime beginDate, DateTime endDate) =>
-            await repositoryManager.LeaveRepository.GetLeavesByDateRangeAsync(beginDate, endDate);
+            await RepositoryManager.LeaveRepository.GetLeavesByDateRangeAsync(beginDate, endDate);
         
 
         public async Task<IEnumerable<LeaveDto>> GetLeaveBalanceAsync(int employeeId) =>
-            await repositoryManager.LeaveRepository.GetLeaveBalanceAsync(employeeId);
+            await RepositoryManager.LeaveRepository.GetLeaveBalanceAsync(employeeId);
         
 
         public async Task<bool> CancelLeaveAsync(int leaveId) =>
-            await repositoryManager.LeaveRepository.CancelLeaveAsync(leaveId);
+            await RepositoryManager.LeaveRepository.CancelLeaveAsync(leaveId);
         
     }
 }

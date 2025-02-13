@@ -4,7 +4,7 @@ namespace Server.DAL.Repository;
 
 public class PositionRepository
 {
-    public async Task AddPositionAsync(string name)
+    public async Task<bool> AddPositionAsync(string name)
     {
         
     }
@@ -14,12 +14,12 @@ public class PositionRepository
         return null;
     }
     
-    public async Task UpdatePositionAsync(int id, string name)
+    public async Task<bool> UpdatePositionAsync(int id, string name)
     {
         
     }
     
-    public async Task DeletePositionAsync(int positionId)
+    public async Task<bool> DeletePositionAsync(int positionId)
     {
         
     }

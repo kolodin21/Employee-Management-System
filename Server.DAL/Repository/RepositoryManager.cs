@@ -2,19 +2,10 @@
 {
     public class RepositoryManager
     {
-        public DepartmentRepository DepartmentRepository { get; }
-        public EmployeeRepository EmployeeRepository { get; }
-        public LeaveRepository LeaveRepository { get; }
-        public PositionRepository PositionRepository { get; }
-        public ReportSearchRepository ReportSearchRepository { get; }
-
-        public RepositoryManager()
-        {
-            DepartmentRepository = new DepartmentRepository();
-            EmployeeRepository = new EmployeeRepository();
-            LeaveRepository = new LeaveRepository();
-            PositionRepository = new PositionRepository();
-            ReportSearchRepository = new ReportSearchRepository();
-        }
+        public DepartmentRepository DepartmentRepository { get; } = new();
+        public EmployeeRepository EmployeeRepository { get; } = new();
+        public LeaveRepository LeaveRepository { get; } = new();
+        public PositionRepository PositionRepository { get; } = new();
+        public ReportSearchRepository ReportSearchRepository { get; } = new();
     }
 }

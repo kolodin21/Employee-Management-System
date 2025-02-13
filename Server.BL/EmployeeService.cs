@@ -6,26 +6,26 @@ namespace Server.BL
     {
 
         public async Task<bool> AddEmployeeAsync(Employee employee) =>
-            await repositoryManager.EmployeeRepository.AddEmployeeAsync(employee);
+            await RepositoryManager.EmployeeRepository.AddEmployeeAsync(employee);
 
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync() =>
-            await repositoryManager.EmployeeRepository.GetEmployeesAsync();
+            await RepositoryManager.EmployeeRepository.GetEmployeesAsync();
 
 
         public async Task<EmployeeDto> GetEmployeeByIdAsync(int id) =>
-            await repositoryManager.EmployeeRepository.GetEmployeeByIdAsync(id);
+            await RepositoryManager.EmployeeRepository.GetEmployeeByIdAsync(id);
 
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesByDepartmentAsync(int departmentId) =>
-            await repositoryManager.EmployeeRepository.GetEmployeesByDepartmentAsync(departmentId);
+            await RepositoryManager.EmployeeRepository.GetEmployeesByDepartmentAsync(departmentId);
        
 
         public async Task<bool> UpdateEmployeeAsync(Employee employee) =>
-            await repositoryManager.EmployeeRepository.UpdateEmployeeAsync(employee);
+            await RepositoryManager.EmployeeRepository.UpdateEmployeeAsync(employee);
        
 
         public async Task<bool> DeleteEmployeeAsync(int employeeId) =>
-            await repositoryManager.EmployeeRepository.DeleteEmployeeAsync(employeeId);
+            await RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(employeeId);
     }
 }
