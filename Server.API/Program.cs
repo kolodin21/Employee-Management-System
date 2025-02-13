@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Models;
 using NLog;
+using NLog.Fluent;
 using Server.BL;
 
 #region MyRegion
@@ -108,7 +110,7 @@ async Task<IResult> HttpRequestAsync(Func<Task> managerService, string message)
     }
 }
 
-#region Employee
+#region EmployeeService
 
 app.MapPost("/employees/new", async (Employee emp, ManagerService managerService) =>
     await HttpRequestAsync(
