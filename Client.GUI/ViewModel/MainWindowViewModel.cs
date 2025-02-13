@@ -15,7 +15,6 @@ namespace Client.GUI.ViewModel
 
     }
 
-
     public class MainWindowViewModel : ViewModelBase
     {
         //Логгер
