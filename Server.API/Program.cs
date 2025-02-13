@@ -1,5 +1,5 @@
 using NLog;
-using Server.BL
+using Server.BL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +21,7 @@ var reportSearchService = new ReportSearchService();
 #region EmployeeRepository
 app.MapGet("/employees", async () => await employeeService.GetEmployeesAsync());
 app.MapGet("/employee/{id}", async (int id) => await employeeService.GetEmployeeByIdAsync(id));
-app.MapGet("/department/{id}/employees", async (int departmentId) => await employeeService.GetEmployeesByDepartmentAsync(departmentId);
+app.MapGet("/department/{id}/employees", async (int departmentId) => await employeeService.GetEmployeesByDepartmentAsync(departmentId));
 
 app.MapPost("/employees/new", async (Employee emp) => await employeeService.AddEmployeeAsync(emp));
 app.MapPut("/employees", async (Employee emp) => await employeeService.UpdateEmployeeAsync(emp));
