@@ -10,7 +10,7 @@
         <logInSystem:AuthorizationPageViewModel/>
     </UserControl.DataContext>
 
-    <Grid Background="AliceBlue">
+    <Grid Background="AntiqueWhite">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>

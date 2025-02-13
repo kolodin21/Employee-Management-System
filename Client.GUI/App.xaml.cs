@@ -30,7 +30,7 @@ namespace Client.GUI
 
             services.AddViewWithViewModel<MainMenuPageView,MainMenuPageViewModel>();
             services.AddViewWithViewModel<AuthorizationPageView, AuthorizationPageViewModel>();
-
+            services.AddViewWithViewModel<AdminPageView, AdminPageViewModel>();
         }
 
     }

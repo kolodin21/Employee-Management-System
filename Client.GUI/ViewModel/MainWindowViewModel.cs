@@ -11,6 +11,7 @@ namespace Client.GUI.ViewModel
         public static string MainMenu => "Главное меню";
         public static string Authorization => "Авторизация";
         public static string AddEmployee => "Добавление сотрудника";
+        public static string Administrator => "Администратор";
 
     }
 
@@ -30,6 +31,7 @@ namespace Client.GUI.ViewModel
 
             InitializeAndSubscribeToContentChanges<MainMenuPageViewModel>();
             InitializeAndSubscribeToContentChanges<AuthorizationPageViewModel>();
+            InitializeAndSubscribeToContentChanges<AdminPageViewModel>();
 
         }
         private void InitializeAndSubscribeToContentChanges<TViewModel>()
