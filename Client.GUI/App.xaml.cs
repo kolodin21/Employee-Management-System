@@ -3,6 +3,7 @@ using Client.GUI.View;
 using Client.GUI.View.LogInSystem;
 using Client.GUI.ViewModel;
 using Client.GUI.ViewModel.LogInSystem;
+using Client.HTTP;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Client.GUI
@@ -10,6 +11,7 @@ namespace Client.GUI
     public partial class App : Application
     {
         public IServiceProvider ServiceProvider { get; }
+        public ManagerHttp ManagerHttp { get; }
 
         public App()
         {
@@ -20,13 +22,20 @@ namespace Client.GUI
 
             // Построение провайдера
             ServiceProvider = services.BuildServiceProvider();
+            ManagerHttp = ServiceProvider.GetRequiredService<ManagerHttp>();
 
-            ViewModelBase.Initialize(ServiceProvider);
+            ViewModelBase.Initialize(ServiceProvider,ManagerHttp);
         }
 
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<EmployeeHttpClient>();
+            services.AddSingleton<DepartmentHttpClient>();
+            services.AddSingleton<PositionHttpClient>();
+            services.AddSingleton<ReportHttpClient>();
+            services.AddSingleton<LeaveHttpClient>();
+            services.AddSingleton<ManagerHttp>();
 
             services.AddViewWithViewModel<MainMenuPageView,MainMenuPageViewModel>();
             services.AddViewWithViewModel<AuthorizationPageView, AuthorizationPageViewModel>();

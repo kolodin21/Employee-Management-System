@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Diagnostics;
 using Models;
 using NLog;
-using NLog.Fluent;
 using Server.BL;
 
 #region MyRegion

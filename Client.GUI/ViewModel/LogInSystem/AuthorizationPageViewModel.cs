@@ -13,8 +13,8 @@ namespace Client.GUI.ViewModel.LogInSystem
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Reactive] public string? Login { get; set; } 
-        [Reactive] public string? Password { get; set; } 
+        [Reactive] public string? Login { get; set; } = "Admin";
+        [Reactive] public string? Password { get; set; } = "Admin";
         public ReactiveCommand<Unit, Unit> EnterCommand { get; }
         public ReactiveCommand<Unit, Unit> BackCommand { get; }
 

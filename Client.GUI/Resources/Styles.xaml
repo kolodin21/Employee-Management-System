@@ -37,11 +37,13 @@
         <Setter Property="Height" Value="50"/>
     </Style>
 
-    <!-- Стиль для другой кнопки --><!--
-    <Style x:Key="ButtonStyle1" TargetType="Button" 
+    <!-- Стиль для доп кнопки меню -->
+    <Style x:Key="ButtonSmallMenuStyle" TargetType="Button" 
         BasedOn="{StaticResource BaseButtonStyle}">
-        <Setter Property="Background" Value="BurlyWood" />
-    </Style>-->
+        <Setter Property="Background" Value="DarkKhaki"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="50"/>
+    </Style>
 
 
 
@@ -98,17 +100,37 @@
         <Setter Property="Margin" Value="0 5 0 5"/>
     </Style>
 
-    <!-- Общий стиль для кнопок -->
-    <Style x:Key="ButtonStyle" TargetType="Button">
-        <Setter Property="Margin" Value="10"/>
-        <Setter Property="Padding" Value="10"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Background" Value="BurlyWood"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="#4472c4"/>
+  
+<!--DataGrid-->
+
+    <!-- Стили строк -->
+    <Style TargetType="DataGridRow" x:Key="DataGridRowStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Background" Value="White"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="DarkSeaGreen"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Стили ячеек -->
+    <Style TargetType="DataGridCell" x:Key="DataGridCellStyle">
+        <Setter Property="Padding" Value="3"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <!--<Setter Property="Cursor" Value="Hand"/>-->
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Стили заголовков колонок -->
+    <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderStyle">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Background" Value="DarkKhaki"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 
 

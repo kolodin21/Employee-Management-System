@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using ReactiveUI;
 using System.Windows.Controls;
+using Client.HTTP;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Client.GUI.ViewModel
@@ -14,10 +15,11 @@ namespace Client.GUI.ViewModel
     {
         //DI провайдер
         protected static IServiceProvider ServiceProvider { get; private set; } = null!;
-
-        public static void Initialize(IServiceProvider serviceProvider)
+        protected static ManagerHttp ManagerHttp { get; private set; } = null!;
+        public static void Initialize(IServiceProvider serviceProvider, ManagerHttp managerHttp)
         {
             ServiceProvider = serviceProvider;
+            ManagerHttp = managerHttp;
         }
 
         #region IContentChanger

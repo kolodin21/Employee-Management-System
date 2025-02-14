@@ -15,11 +15,11 @@ namespace Client.GUI.Configuration
                 .Build();
         }
 
-        public static string Login => Configuration["AdminSettings:AdminLogin"];
+        public static string? Login => Configuration["AdminSettings:AdminLogin"];
 
-        public static string Password => Configuration["AdminSettings:AdminPassword"];
+        public static string? Password => Configuration["AdminSettings:AdminPassword"];
 
-        public static string PathNlog => Configuration["AdminSettings:PathNlog"];
+        public static string? PathNlog => Configuration["AdminSettings:PathNlog"];
         //Todo
         // добавить проверки на null
     }
