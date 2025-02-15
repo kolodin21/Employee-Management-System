@@ -3,14 +3,19 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace Client.GUI.ViewModel
 {
      public class EmployeeAllPageViewModel : ViewModelBase
-    {
-        [Reactive] public EmployeeDto SelectedEmployee { get; set; }
+     {
+        [Reactive] public EmployeeDto? SelectedEmployee { get; set; }
 
+        [Reactive] public bool IsEditCommand { get; set; }
+        [Reactive] public bool IsDeleteCommand { get; set; }
+
+        public ReactiveCommand<Unit,Unit>  EditEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
 
 
@@ -37,7 +42,7 @@ namespace Client.GUI.ViewModel
 
         public EmployeeAllPageViewModel()
         {
-            DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync);
+            DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync,CanExecSelectedEmployee());
         }
 
         private async Task DeleteEmployeeAsync()
@@ -47,13 +52,19 @@ namespace Client.GUI.ViewModel
 
             if (isDeleted)
             {
-                Employees.Remove(SelectedEmployee);
+                Employees.Remove(SelectedEmployee!);
                 MessageBox.Show("Сотрудник удален");
             }
             else
             {
                 MessageBox.Show("Ошибка удаления сотрудника");
             }
+        }
+
+        private IObservable<bool> CanExecSelectedEmployee()
+        {
+            return this.WhenAnyValue(vm => vm.SelectedEmployee)
+                .Select(selectedEmployee => selectedEmployee != null);
         }
     }
 }

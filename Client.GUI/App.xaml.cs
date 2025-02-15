@@ -40,7 +40,9 @@ namespace Client.GUI
             services.AddViewWithViewModel<MainMenuPageView,MainMenuPageViewModel>();
             services.AddViewWithViewModel<AuthorizationPageView, AuthorizationPageViewModel>();
             services.AddViewWithViewModel<AdminPageView, AdminPageViewModel>();
-            services.AddViewWithViewModel<EmployeeAllPageView, EmployeeAllPageViewModel>();
+
+
+            services.AddViewWithViewModelTransient<EmployeeAllPageView, EmployeeAllPageViewModel>();
         }
 
     }
@@ -55,6 +57,21 @@ namespace Client.GUI
         {
             services.AddSingleton<TViewModel>();
             services.AddSingleton<TView>(provider =>
+            {
+                var view = new TView
+                {
+                    DataContext = provider.GetRequiredService<TViewModel>()
+                };
+                return view;
+            });
+            return services;
+        }
+        public static IServiceCollection AddViewWithViewModelTransient<TView, TViewModel>(this IServiceCollection services)
+            where TView : FrameworkElement, new()
+            where TViewModel : class
+        {
+            services.AddTransient<TViewModel>();
+            services.AddTransient<TView>(provider =>
             {
                 var view = new TView
                 {
