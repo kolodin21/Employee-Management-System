@@ -20,4 +20,9 @@ public class DepartmentRepository
         
     }
     
+    public async Task<IEnumerable<Department>> GetAllDepartmentsAsync(int departmentId)
+    {
+        return null;
+    }
+    
 }
