@@ -21,18 +21,14 @@ namespace Client.GUI.ViewModel
 
         public AdminPageViewModel()
         {
+
             LoadEmployeeCommand = ReactiveCommand.Create(() =>
             {
-               CurrentContentAdminPage = GetPage<EmployeeAllPageView>();
+                CurrentContentAdminPage = GetPage<EmployeeAllPageView>();
             });
-            
 
-            OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
-        }
-
-        private void OpenAddEmployeePage()
-        {
-
+            //OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
         }
     }
 }
+ 

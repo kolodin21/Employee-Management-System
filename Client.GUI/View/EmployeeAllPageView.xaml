@@ -7,6 +7,9 @@
         <viewModel:EmployeeAllPageViewModel/>
     </UserControl.DataContext>
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
 
 
     <Grid Background="AntiqueWhite">
@@ -22,6 +25,7 @@
                Style="{StaticResource LabelMenuStyle}"/>
 
             <Button Content="Редактирование"
+                    Command="{Binding EditEmployeeCommand}"
                 Style="{StaticResource ButtonSmallMenuStyle}"/>
 
             <Button Content="Удаление"
@@ -43,7 +47,7 @@
                 Style="{StaticResource LabelMenuStyle}"/>
 
             <!--Все сотрудники-->
-            <DataGrid Visibility="{Binding IsEditCommand,Converter={StaticResource  }}"
+            <DataGrid Visibility="{Binding IsEmployeeCommand,Converter={StaticResource BoolToVis }}"
                   Grid.Row="1" 
                   Margin="0,0,0,5"
                   AutoGenerateColumns="False"
@@ -80,6 +84,10 @@
 
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Label Grid.Row="1" 
+                   Content="Редактирование" 
+                   Visibility="{Binding IsEditCommand,Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </Grid>
 

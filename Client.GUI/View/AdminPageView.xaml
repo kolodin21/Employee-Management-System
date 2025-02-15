@@ -10,7 +10,7 @@
     </UserControl.DataContext>
 
     <!-- Основной Grid -->
-    <Grid Background="AntiqueWhite">
+    <Grid Background="AntiqueWhite" >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

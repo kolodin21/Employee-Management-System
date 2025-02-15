@@ -13,5 +13,10 @@
         <vm:MainWindowViewModel/>
 
     </Window.DataContext>
-        <ContentPresenter Content="{Binding CurrentContent}" />
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ContentPresenter Content="{Binding CurrentContent}" 
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Center"/>
+    </Grid>
 </Window>

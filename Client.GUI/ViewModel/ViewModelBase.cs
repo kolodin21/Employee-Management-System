@@ -32,6 +32,7 @@ namespace Client.GUI.ViewModel
             ContentChanged?.Invoke(newContent, title);
         }
 
+
         //Подписка на обновление данных
         protected void SubscribeToContentChanged<TViewModel>(TViewModel viewModel, Action<UserControl, string> updateContent)
             where TViewModel : class

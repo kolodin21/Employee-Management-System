@@ -1,19 +1,23 @@
-﻿using Models;
+﻿using Client.GUI.View;
+using Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Client.GUI.ViewModel
 {
-     public class EmployeeAllPageViewModel : ViewModelBase
-     {
+
+    public class EmployeeAllPageViewModel : ViewModelBase
+    {
+
         [Reactive] public EmployeeDto? SelectedEmployee { get; set; }
 
         [Reactive] public bool IsEditCommand { get; set; }
-        [Reactive] public bool IsDeleteCommand { get; set; }
+        [Reactive] public bool IsEmployeeCommand { get; set; }
 
         public ReactiveCommand<Unit,Unit>  EditEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
@@ -43,6 +47,8 @@ namespace Client.GUI.ViewModel
         public EmployeeAllPageViewModel()
         {
             DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync,CanExecSelectedEmployee());
+            EditEmployeeCommand = ReactiveCommand.Create(EditEmployee,CanExecSelectedEmployee());
+            IsEmployeeCommand = true;
         }
 
         private async Task DeleteEmployeeAsync()
@@ -53,6 +59,7 @@ namespace Client.GUI.ViewModel
             if (isDeleted)
             {
                 Employees.Remove(SelectedEmployee!);
+                SelectedEmployee = null;
                 MessageBox.Show("Сотрудник удален");
             }
             else
@@ -60,11 +67,22 @@ namespace Client.GUI.ViewModel
                 MessageBox.Show("Ошибка удаления сотрудника");
             }
         }
+        private void EditEmployee()
+        {
+            Reset();
+            IsEditCommand = true;
+        }
 
         private IObservable<bool> CanExecSelectedEmployee()
         {
             return this.WhenAnyValue(vm => vm.SelectedEmployee)
                 .Select(selectedEmployee => selectedEmployee != null);
+        }
+
+        private void Reset()
+        {
+            IsEditCommand = false;
+            IsEmployeeCommand = false;
         }
     }
 }
