@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System.Net.Http;
 
 namespace Client.HTTP
 {
@@ -9,27 +10,7 @@ namespace Client.HTTP
 
         public static string DeleteEmployeeUri(int id) => $"{Host}/employee/{id}";
 
-        public async Task<bool> DeleteEmployeeAsync(int id)
-        {
-            try
-            {
-                var response = await Client.DeleteAsync(DeleteEmployeeUri(id));
-
-                switch (response)
-                {
-                    case null:
-                        Logger.Warn("Ответ от сервера пустой.");
-                        return false;
-                    default:
-                        return response.IsSuccessStatusCode;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Логируем ошибку
-                Logger.Warn($"Ошибка при удалении сотрудника: {ex.Message}");
-                return false;
-            }
-        }
+        public async Task<bool> DeleteEmployeeAsync(int id) =>
+            await HttpRequest(async () => await Client.DeleteAsync(DeleteEmployeeUri(id)), Logger, "Ошибка удаления сотрудника");
     }
 }

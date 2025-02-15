@@ -15,10 +15,10 @@
 
     <!-- Основной Grid -->
     <Grid Background="AntiqueWhite">
-        
+
         <Grid.RowDefinitions>
-           <RowDefinition Height="*"/>
-           <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
         <!--Верхнее меню и название-->
@@ -33,14 +33,18 @@
             <Label Grid.Row="0" 
                    Content="Управление сотрудниками"
                    Style="{StaticResource Heading}"/>
-            
+
             <!--Меню для дополнительных кнопок управления-->
             <Grid Grid.Row="1">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/> 
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="51*"/>
+                    <ColumnDefinition Width="14*"/>
                 </Grid.ColumnDefinitions>
+
+                <Label
+                       Content="Все сотрудники компании "
+                       Style="{StaticResource LabelMenuStyle}"/>
             </Grid>
         </Grid>
 
@@ -52,7 +56,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Основное меню-->
             <StackPanel Grid.Column="1">
 
@@ -64,7 +68,7 @@
                         Style="{StaticResource ButtonMenuStyle}"/>
 
                 <Button Content="Добавление сотрудника"
-                        Command="{Binding AddEmployeeCommand}"
+                        Command="{Binding OpenAddEmployeeCommand}"
                         Style="{StaticResource ButtonMenuStyle}"/>
 
                 <Button Content="Учет отпусков и больничных"
@@ -94,7 +98,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <!--Все сотрудники-->
                 <DataGrid Grid.Column="1"
                           Margin="0,0,0,5"
@@ -144,7 +148,7 @@
                     <Button Content="Удаление"
                             Command="{Binding DeleteEmployeeCommand}"
                             Style="{StaticResource ButtonSmallMenuStyle}"/>
-                   
+
                 </StackPanel>
 
             </Grid>

@@ -13,7 +13,7 @@ namespace Client.GUI.ViewModel
 
         //Основное меню администратора
         public ReactiveCommand<Unit, Unit> LoadEmployeeCommand { get; }
-        public ReactiveCommand<Unit,Unit> AddEmployeeCommand { get; }
+        public ReactiveCommand<Unit,Unit> OpenAddEmployeeCommand { get; }
         public ReactiveCommand<Unit,Unit> AccountingCommand { get; }
         public ReactiveCommand<Unit,Unit> GeneratingReportsCommand { get; }
         public ReactiveCommand<Unit, Unit> ChangingCommand { get; }
@@ -58,11 +58,31 @@ namespace Client.GUI.ViewModel
         public AdminPageViewModel()
         {
             DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync);
+
+
+            LoadEmployeeCommand = ReactiveCommand.CreateFromTask(LoadEmployeeAsync);
+            OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
+
+
+        }
+
+        private void OpenAddEmployeePage()
+        {
+            ResetModes();
+            IsAddEmployee = true;
+        }
+
+        private async Task LoadEmployeeAsync()
+        {
+            //Employees = await ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
+            ResetModes();
+            IsLoadEmployee = true;
         }
 
         private async Task DeleteEmployeeAsync()
         {
-            var isDeleted = await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id);
+            //var isDeleted = await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id);
+            var isDeleted = true;
 
             if (isDeleted)
             {
@@ -74,5 +94,14 @@ namespace Client.GUI.ViewModel
                 MessageBox.Show("Ошибка удаления сотрудника");
             }
         }
+        private void ResetModes()
+        {
+            IsLoadEmployee = false;
+            IsAddEmployee = false;
+            IsAccounting = false;
+            IsGeneratingReports = false;
+            IsChanging = false;
+        }
+
     }
 }
