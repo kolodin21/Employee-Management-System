@@ -50,13 +50,14 @@
     <!-- Базовый стиль для всех Label -->
     <Style x:Key="BaseLabelStyle" TargetType="Label">
         <Setter Property="FontSize" Value="18" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
+       
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <!-- Стиль для заголовка -->
     <Style x:Key="LabelMenuStyle" TargetType="Label"
         BasedOn="{StaticResource BaseLabelStyle}">
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
@@ -64,6 +65,14 @@
     <Style x:Key="Heading" TargetType="Label" 
         BasedOn="{StaticResource BaseLabelStyle}">
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <!-- Стиль для другого Label -->
+    <Style x:Key="HeadingSmall" TargetType="Label" 
+           BasedOn="{StaticResource BaseLabelStyle}">
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Medium" />
     </Style>
 
@@ -85,18 +94,24 @@
     <!-- Стиль для TextBox -->
     <Style x:Key="TextBoxMenu" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}" />
 
-
     <!-- Стиль для PasswordBox -->
     <Style x:Key="PasswordBoxStyle" TargetType="PasswordBox" BasedOn="{StaticResource BaseInputStyle}" />
 
     <!-- Общий стиль для TextBox -->
-    <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BaseInputStyle}"/>
+    <Style x:Key="InputTextBoxStyle" 
+           TargetType="TextBox" 
+           BasedOn="{StaticResource BaseInputStyle}"/>
 
 
     <!-- Общий стиль для Label -->
     <Style x:Key="InputLabelStyle" TargetType="Label">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+    </Style>
+
+    <!-- Общий стиль для ComboBox -->
+    <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
         <Setter Property="Margin" Value="0 5 0 5"/>
     </Style>
 

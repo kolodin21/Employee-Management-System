@@ -6,8 +6,8 @@
 
     <Grid DataContext="{Binding ElementName=Input}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Заголовок (лейбл) -->

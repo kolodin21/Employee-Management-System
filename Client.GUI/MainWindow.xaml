@@ -14,9 +14,7 @@
 
     </Window.DataContext>
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <ContentPresenter Content="{Binding CurrentContent}" 
-                          HorizontalAlignment="Center" 
-                          VerticalAlignment="Center"/>
+    <Grid>
+        <ContentPresenter Content="{Binding CurrentContent}" />
     </Grid>
 </Window>

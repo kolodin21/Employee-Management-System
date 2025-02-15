@@ -1,12 +1,10 @@
-﻿using Client.GUI.View;
-using Models;
+﻿using Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Client.GUI.ViewModel
 {
@@ -15,12 +13,19 @@ namespace Client.GUI.ViewModel
     {
 
         [Reactive] public EmployeeDto? SelectedEmployee { get; set; }
-
-        [Reactive] public bool IsEditCommand { get; set; }
+        [Reactive] public bool IsEditCommand { get; set; } = true;
         [Reactive] public bool IsEmployeeCommand { get; set; }
 
         public ReactiveCommand<Unit,Unit>  EditEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
+        public ReactiveCommand<Unit, Unit> BackCommand { get; }
+        public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+
+        [Reactive] public KeyValuePair<int, string>? SelectedDepartment { get; set; }
+        public List<KeyValuePair<int, string>> DepartmentsList { get; }
+
+        [Reactive] public KeyValuePair<int, string>? SelectedPosition{ get; set; }
+        public List<KeyValuePair<int, string>> PositionList { get; }
 
 
         //Коллекция сотрудников
@@ -48,9 +53,42 @@ namespace Client.GUI.ViewModel
         {
             DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync,CanExecSelectedEmployee());
             EditEmployeeCommand = ReactiveCommand.Create(EditEmployee,CanExecSelectedEmployee());
-            IsEmployeeCommand = true;
-        }
+            BackCommand = ReactiveCommand.Create(Back);
+            SaveCommand = ReactiveCommand.Create(Save);
 
+            DepartmentsList = new List<KeyValuePair<int, string>>
+            {
+                new(1, "IT"),
+                new(2, "Бухгалтерия"),
+                new(3, "Отдел кадров"),
+                new(4, "Продажи"),
+                new(5, "Финансы"),
+                new(6, "Маркетинг"),
+                new(7, "Логистика"),
+                new(8, "Юридический отдел"),
+                new(9, "Отдел безопасности")
+            };
+
+            PositionList = new List<KeyValuePair<int, string>>
+            {
+                new(1, "Разработчик"),
+                new(2, "Бухгалтер"),
+                new(3, "HR-менеджер"),
+                new(4, "Менеджер"),
+                new(5, "Аналитик"),
+                new(6, "Системный администратор"),
+                new(7, "Маркетолог"),
+                new(8, "Логист"),
+                new(9, "QA-инженер"),
+                new(10, "Аудитор"),
+                new(11, "Юрист"),
+                new(12, "Охранник"),
+                new(13, "Аналитик"),
+                new(14, "Бухгалтер"),
+            };
+
+        }
+        //Todo Переделать логику под вызовы из бд
         private async Task DeleteEmployeeAsync()
         {
             //var isDeleted = await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id);
@@ -67,22 +105,37 @@ namespace Client.GUI.ViewModel
                 MessageBox.Show("Ошибка удаления сотрудника");
             }
         }
-        private void EditEmployee()
-        {
-            Reset();
-            IsEditCommand = true;
-        }
-
         private IObservable<bool> CanExecSelectedEmployee()
         {
             return this.WhenAnyValue(vm => vm.SelectedEmployee)
                 .Select(selectedEmployee => selectedEmployee != null);
         }
+        private void EditEmployee()
+        {
+            Reset();
+            IsEditCommand = true;
+            SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee!.Department);
+            SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee!.Position);
 
+        }
+
+        private void Save()
+        {
+            SelectedEmployee!.Department = SelectedDepartment?.Value ?? string.Empty;
+            SelectedEmployee!.Position = SelectedPosition?.Value ?? string.Empty;
+        }
+
+
+        private void Back()
+        {
+            Reset();
+            IsEmployeeCommand = true;
+        }
         private void Reset()
         {
             IsEditCommand = false;
             IsEmployeeCommand = false;
         }
+
     }
 }
