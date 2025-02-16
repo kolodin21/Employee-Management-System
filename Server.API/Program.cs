@@ -150,6 +150,11 @@ app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id
 
 #region DepartmentService
 //app.MapGet("/departments", async () => await departmentService.GetDepartmentsAsync());
+//Todo Добавить реализацию метода GetDepartmentsAsync
+//app.MapGet("/departments", async (ManagerService managerService) =>
+//    await HttpRequestAsync(
+//        () => managerService.DepartmentService.GetDepartmentsAsync(),
+//        "Error getting departments"));
 
 app.MapPost("/departments/new", async (Department department, ManagerService managerService) =>
     await HttpRequestAsync(
