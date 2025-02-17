@@ -8,6 +8,14 @@
         public string? Patronymic { get; set; } // Может быть null
     }
     
+    public class Employee : Person
+    {
+        public int DepartmentId { get; set; } 
+        public int PositionId { get; set; }
+        public DateTime HireDate { get; set; } // Дата устройства на работу
+        public bool IsActive { get; set; }     // статус сотрудника (активный/уволенный).
+    }
+    
     public class EmployeeDto : Person, IEquatable<EmployeeDto>
     {
         

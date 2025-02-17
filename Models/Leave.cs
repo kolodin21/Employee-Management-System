@@ -18,7 +18,7 @@
         public DateTime EndDate { get; set; }    // дата окончания.
     }
 
-    public class LeaveDto : Person
+    public class LeaveDto : Leave
     {
         public int LeaveId { get; set; }         // Id записи
         public LeaveType LeaveType { get; set; } // Тип отсутствия 
