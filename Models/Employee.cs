@@ -13,7 +13,7 @@
         public int DepartmentId { get; set; } 
         public int PositionId { get; set; }
         public DateTime HireDate { get; set; } // Дата устройства на работу
-        public bool IsActive { get; set; }     // статус сотрудника (активный/уволенный).
+        public bool IsActive { get; set; } = true; // статус сотрудника (активный/уволенный).
     }
 
 
@@ -24,5 +24,32 @@
         public int PositionId { get; set; }
         public string Position { get; set; }   // Название должности
         public DateTime HireDate { get; set; } // Дата устройства на работу
+
+        //public override bool Equals(object? obj)
+        //{
+        //    if (obj is EmployeeDto other)
+        //    {
+        //        return Id == other.Id &&
+        //               Name == other.Name &&
+        //               Surname == other.Surname &&
+        //               Patronymic == other.Patronymic &&
+        //               DepartmentId == other.DepartmentId &&
+        //               Department == other.Department &&
+        //               PositionId == other.PositionId &&
+        //               Position == other.Position &&
+        //               HireDate == other.HireDate;
+        //    }
+        //    return false;
+        //}
+
+        //public override int GetHashCode()
+        //{
+        //    return HashCode.Combine(
+        //        Id,
+        //        HashCode.Combine(Name, Surname, Patronymic),
+        //        HashCode.Combine(DepartmentId, Department),
+        //        HashCode.Combine(PositionId, Position, HireDate)
+        //    );
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Models;
+using NLog;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
@@ -11,21 +12,33 @@ namespace Client.GUI.ViewModel
 
     public class EmployeeAllPageViewModel : ViewModelBase
     {
+        //Логгер
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        [Reactive] private EmployeeDto? OriginalEmployee { get; set; }
 
         [Reactive] public EmployeeDto? SelectedEmployee { get; set; }
-        [Reactive] public bool IsEditCommand { get; set; } = true;
-        [Reactive] public bool IsEmployeeCommand { get; set; }
+        [Reactive] public bool IsOpenWindowEdit { get; set; } 
+        [Reactive] public bool IsOpenWindowAllEmployee { get; set; } = true;
+        [Reactive] public bool IsActiveButtonEdit { get; set; } = true;
+
+        [Reactive] public string Name { get; set; }
+        [Reactive] public string Surname { get; set; }
+        [Reactive] public string? Patronymic { get; set; }
+        [Reactive] public string? HireDate { get; set; }
 
         public ReactiveCommand<Unit,Unit>  EditEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> BackCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
 
-        [Reactive] public KeyValuePair<int, string>? SelectedDepartment { get; set; }
-        public List<KeyValuePair<int, string>> DepartmentsList { get; }
+        //Команда загрузки данных
+        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
 
-        [Reactive] public KeyValuePair<int, string>? SelectedPosition{ get; set; }
-        public List<KeyValuePair<int, string>> PositionList { get; }
+        //Выбранный департамент и должность
+        [Reactive] public KeyValuePair<int, string> SelectedDepartment { get; set; }
+        [Reactive] public KeyValuePair<int, string> SelectedPosition{ get; set; }
+        public List<KeyValuePair<int, string>> DepartmentsList { get; set; }
+        public List<KeyValuePair<int, string>> PositionList { get; set; }
 
 
         //Коллекция сотрудников
@@ -53,9 +66,10 @@ namespace Client.GUI.ViewModel
         {
             DeleteEmployeeCommand = ReactiveCommand.CreateFromTask(DeleteEmployeeAsync,CanExecSelectedEmployee());
             EditEmployeeCommand = ReactiveCommand.Create(EditEmployee,CanExecSelectedEmployee());
+            SaveCommand = ReactiveCommand.CreateFromTask(Save, CanSave());
             BackCommand = ReactiveCommand.Create(Back);
-            SaveCommand = ReactiveCommand.Create(Save);
 
+            //Todo : Переделать логику под вызовы из бд
             DepartmentsList = new List<KeyValuePair<int, string>>
             {
                 new(1, "IT"),
@@ -68,7 +82,6 @@ namespace Client.GUI.ViewModel
                 new(8, "Юридический отдел"),
                 new(9, "Отдел безопасности")
             };
-
             PositionList = new List<KeyValuePair<int, string>>
             {
                 new(1, "Разработчик"),
@@ -87,22 +100,42 @@ namespace Client.GUI.ViewModel
                 new(14, "Бухгалтер"),
             };
 
+            //LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);
+            //LoadCommand.Execute().Subscribe();
+
         }
         //Todo Переделать логику под вызовы из бд
         private async Task DeleteEmployeeAsync()
         {
-            //var isDeleted = await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id);
-            var isDeleted = true;
-
-            if (isDeleted)
+            var result = MessageBox.Show("Вы действительно хотите удалать сотрудника?","Предупреждение", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
-                Employees.Remove(SelectedEmployee!);
-                SelectedEmployee = null;
-                MessageBox.Show("Сотрудник удален");
+                //Todo : Сделать вызов основным и также удаление из кэша
+
+                //var isDeleted = await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id);
+                var isDeleted = true;
+
+                if (isDeleted)
+                {
+                    Logger.Info($"Сотрудник c {SelectedEmployee!.Id} удален");
+                    Employees.Remove(SelectedEmployee!);
+                    MessageBox.Show("Сотрудник удален");
+
+                    if (!IsActiveButtonEdit)
+                    {
+                        Reset();
+                        IsOpenWindowAllEmployee = true;
+                    }
+                }
+                else
+                {
+                    Logger.Error($"Ошибка удаления сотрудника с {SelectedEmployee!.Id}");
+                    MessageBox.Show("Ошибка удаления сотрудника");
+                }
             }
             else
             {
-                MessageBox.Show("Ошибка удаления сотрудника");
+                Logger.Info("Удаление сотрудника отменено");
             }
         }
         private IObservable<bool> CanExecSelectedEmployee()
@@ -110,31 +143,139 @@ namespace Client.GUI.ViewModel
             return this.WhenAnyValue(vm => vm.SelectedEmployee)
                 .Select(selectedEmployee => selectedEmployee != null);
         }
+
+        private IObservable<bool> CanSave()
+        {
+
+            return this.WhenAnyValue(
+                vm => vm.Name,
+                vm => vm.Surname,
+                vm => vm.Patronymic,
+                vm => vm.SelectedDepartment,
+                vm => vm.SelectedPosition,
+                vm => vm.HireDate,
+                (name, surname, patronymic, department, position, hireDate) =>
+                    !string.IsNullOrWhiteSpace(name) &&
+                    !string.IsNullOrWhiteSpace(surname) &&
+                    !string.IsNullOrWhiteSpace(patronymic) &&
+                    department.Key != 0 &&
+                    position.Key != 0 &&
+                    !string.IsNullOrWhiteSpace(hireDate) &&
+                    (OriginalEmployee != null &&
+                     (name != OriginalEmployee.Name ||
+                      surname != OriginalEmployee.Surname ||
+                      patronymic != OriginalEmployee.Patronymic ||
+                      department.Key != OriginalEmployee.DepartmentId ||
+                      position.Key != OriginalEmployee.PositionId ||
+                      hireDate != OriginalEmployee.HireDate.ToString("dd.MM.yyyy")))
+            ); ;
+        }
+
         private void EditEmployee()
         {
             Reset();
-            IsEditCommand = true;
+            IsOpenWindowEdit = true;
+
+            IsActiveButtonEdit = false;
+
             SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee!.Department);
             SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee!.Position);
 
+            Name = SelectedEmployee!.Name;
+            Surname = SelectedEmployee!.Surname;
+            Patronymic = SelectedEmployee.Patronymic;
+            HireDate = SelectedEmployee.HireDate.ToString("dd.MM.yyyy");
+
+            // Сохранение исходного состояния
+            OriginalEmployee = new EmployeeDto
+            {
+                Id = SelectedEmployee.Id,
+                Name = SelectedEmployee.Name,
+                Surname = SelectedEmployee.Surname,
+                Patronymic = SelectedEmployee.Patronymic,
+                DepartmentId = SelectedEmployee.DepartmentId,
+                Department = SelectedEmployee.Department,
+                PositionId = SelectedEmployee.PositionId,
+                Position = SelectedEmployee.Position,
+                HireDate = SelectedEmployee.HireDate
+            };
+
         }
 
-        private void Save()
+        private async Task Save()
         {
-            SelectedEmployee!.Department = SelectedDepartment?.Value ?? string.Empty;
-            SelectedEmployee!.Position = SelectedPosition?.Value ?? string.Empty;
+            SelectedEmployee!.Department = SelectedDepartment.Value;
+            SelectedEmployee!.Position = SelectedPosition.Value;
+
+            var employee = new Employee
+            {
+                Id = SelectedEmployee!.Id,
+                Name = SelectedEmployee!.Name,
+                Surname = SelectedEmployee!.Surname,
+                Patronymic = SelectedEmployee!.Patronymic,
+                DepartmentId = SelectedDepartment!.Key,
+                PositionId = SelectedPosition!.Key,
+                HireDate = SelectedEmployee!.HireDate,
+            };
+
+            //Todo: Обновить кэш
+            if (await ManagerHttp.EmployeeHttpClient.UpdateEmployeeAsync(employee))
+            {
+                Logger.Info($"Сотрудник с {employee.Id} обновлен");
+                MessageBox.Show("Сотрудник обновлен");
+
+                // Обновление данных в коллекции
+                var existingEmployee = Employees.FirstOrDefault(e => e.Id == employee.Id);
+                if (existingEmployee != null)
+                {
+                    existingEmployee.Name = employee.Name;
+                    existingEmployee.Surname = employee.Surname;
+                    existingEmployee.Patronymic = employee.Patronymic;
+                    existingEmployee.Department = SelectedDepartment.Value;
+                    existingEmployee.Position = SelectedPosition.Value;
+                    existingEmployee.HireDate = employee.HireDate;
+
+                    // Уведомление интерфейса об изменении данных
+                    var index = Employees.IndexOf(existingEmployee);
+                    Employees[index] = existingEmployee;
+                }
+            }
+            else
+            {
+                Logger.Error($"Ошибка обновления сотрудника с {employee.Id}");
+                MessageBox.Show("Ошибка обновления сотрудника");
+            }
         }
 
+
+        private async Task LoadDateBase()
+        {
+            //Todo : Сделать кэш в сервисах и обращаться к нему если есть данные
+            var employees = await ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
+            var departments = await ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
+            var positions = await ManagerHttp.PositionHttpClient.GetPositionsAsync();
+
+
+            PositionList = positions.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+            DepartmentsList = departments.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+
+            foreach (var employee in Employees)
+            {
+                Employees.Add(employee);
+            }
+        }
 
         private void Back()
         {
             Reset();
-            IsEmployeeCommand = true;
+            IsOpenWindowAllEmployee = true;
+            IsActiveButtonEdit = true;
+            SelectedEmployee = null;
         }
         private void Reset()
         {
-            IsEditCommand = false;
-            IsEmployeeCommand = false;
+            IsOpenWindowEdit = false;
+            IsOpenWindowAllEmployee = false;
         }
 
     }

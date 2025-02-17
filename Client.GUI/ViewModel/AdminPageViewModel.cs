@@ -18,6 +18,13 @@ namespace Client.GUI.ViewModel
         public ReactiveCommand<Unit, Unit> ChangingCommand { get; }
         public ReactiveCommand<Unit, Unit> ExitCommand { get; }
 
+        [Reactive] public bool IsLoadEmployeeCommand { get; set; }
+        [Reactive] public bool IsOpenAddEmployeeCommand { get; set; }
+        [Reactive] public bool IsAccountingCommand { get; set; }
+        [Reactive] public bool IsGeneratingReportsCommand { get; set; }
+        [Reactive] public bool IsChangingCommand { get; set; }
+
+
 
         public AdminPageViewModel()
         {
@@ -25,9 +32,27 @@ namespace Client.GUI.ViewModel
             LoadEmployeeCommand = ReactiveCommand.Create(() =>
             {
                 CurrentContentAdminPage = GetPage<EmployeeAllPageView>();
-            });
+                Reset();
+                IsLoadEmployeeCommand = true;
+            }, CanLoadEmployee());
 
             //OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
+        }
+
+        private IObservable<bool> CanLoadEmployee()
+        {
+            return this.WhenAnyValue(
+                x => x.IsLoadEmployeeCommand, 
+                (loadEmployee) => !loadEmployee);
+        }
+
+        private void Reset()
+        {
+            IsLoadEmployeeCommand = false;
+            IsOpenAddEmployeeCommand = false;
+            IsAccountingCommand = false;
+            IsGeneratingReportsCommand = false;
+            IsChangingCommand = false;
         }
     }
 }
