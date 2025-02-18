@@ -25,7 +25,7 @@ namespace Server.BL
             await RepositoryManager.EmployeeRepository.UpdateEmployeeAsync(employee);
        
 
-        public async Task<bool> DeleteEmployeeAsync(int employeeId) =>
-            await RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(employeeId);
+        //public async Task<bool> DeleteEmployeeAsync(int employeeId) =>
+        //    await RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(employeeId);
     }
 }

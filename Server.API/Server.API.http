@@ -1,5 +1,8 @@
 @Server.API_HostAddress = http://localhost:5248
 
 
+### Получение списка сотрудников
+GET https://localhost:5248/employees
+Accept: application/json
 
 

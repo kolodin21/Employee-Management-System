@@ -4,9 +4,9 @@ namespace Server.DAL.Repository;
 
 public class LeaveRepository
 {
-    public async Task<bool> AddLeaveAsync(int employeeId, Leave leave)
+    public async Task<bool> AddLeaveAsync(Leave leave)
     {
-        
+        return false;
     }
 
     public async Task<IEnumerable<LeaveDto>> GetLeavesByEmployeeAsync(int employeeId)

@@ -9,10 +9,10 @@ namespace Client.HTTP
         // Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string AddPositionUri() => $"{Host}/position/new";
-        public static string GetPositionsUri() => $"{Host}/positions";
-        public static string UpdatePositionUri(int id) => $"{Host}/positions/{id}";
-        public static string DeletePositionUri(int id) => $"{Host}/positions/{id}";
+        public static Uri AddPositionUri() => new Uri($"{Host}/position/new");
+        public static Uri GetPositionsUri() => new Uri($"{Host}/positions");
+        public static Uri UpdatePositionUri(int id) => new Uri($"{Host}/positions/{id}");
+        public static Uri DeletePositionUri(int id) => new Uri($"{Host}/positions/{id}");
 
 
         public async Task<bool> AddPositionAsync(Position position) =>

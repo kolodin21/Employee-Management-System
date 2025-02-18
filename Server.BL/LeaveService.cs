@@ -20,8 +20,8 @@ namespace Server.BL
             await RepositoryManager.LeaveRepository.GetLeaveBalanceAsync(employeeId);
         
 
-        public async Task<bool> CancelLeaveAsync(int leaveId) =>
-            await RepositoryManager.LeaveRepository.CancelLeaveAsync(leaveId);
+        //public async Task<bool> CancelLeaveAsync(int leaveId) =>
+        //    await RepositoryManager.LeaveRepository.CancelLeaveAsync(leaveId);
         
     }
 }

@@ -9,12 +9,13 @@ namespace Client.HTTP
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string DeleteEmployeeUri(int id) => $"{Host}/employee/{id}";
-        public static string AddEmployeeUri() => $"{Host}/employees/new";
-        public static string GetEmployeesUri() => $"{Host}/employees";
-        public static string GetEmployeeByIdUri(int id) => $"{Host}/employee/{id}";
-        public static string GetEmployeesByDepartmentUri(int id) => $"{Host}/department/{id}/employees";
-        public static string UpdateEmployeeUri() => $"{Host}/employees";
+        
+        public static Uri DeleteEmployeeUri(int id) => new Uri($"{Host}/employee/{id}");
+        public static Uri AddEmployeeUri() => new Uri($"{Host}/employees/new");
+        public static Uri GetEmployeesUri() => new Uri($"{Host}/employees");
+        public static Uri GetEmployeeByIdUri(int id) => new Uri($"{Host}/employee/{id}");
+        public static Uri GetEmployeesByDepartmentUri(int id) => new Uri($"{Host}/department/{id}/employees");
+        public static Uri UpdateEmployeeUri() => new Uri($"{Host}/employees");
 
 
         public async Task<bool> AddEmployeeAsync(Employee employee) =>
@@ -22,6 +23,7 @@ namespace Client.HTTP
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync() =>
             await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesUri()), Logger, "Ошибка получения сотрудников");
+
 
         public async Task<EmployeeDto?> GetEmployeeByIdAsync(int id) =>
             await HttpRequestResultSingleAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeeByIdUri(id)), Logger, $"Ошибка получения сотрудника с id {id}");

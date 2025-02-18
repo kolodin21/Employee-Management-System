@@ -9,10 +9,10 @@ namespace Client.HTTP
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string AddDepartmentUri() => $"{Host}/departments/new";
-        public static string GetDepartmentsUri() => $"{Host}/departments";
-        public static string UpdateDepartmentUri(int id) => $"{Host}/departments/{id}";
-        public static string DeleteDepartmentUri(int id) => $"{Host}/departments/{id}";
+        public static Uri AddDepartmentUri() => new Uri($"{Host}/departments/new");
+        public static Uri GetDepartmentsUri() => new Uri($"{Host}/departments");
+        public static Uri UpdateDepartmentUri(int id) => new Uri($"{Host}/departments/{id}");
+        public static Uri DeleteDepartmentUri(int id) => new Uri($"{Host}/departments/{id}");
 
 
         // Пример использования

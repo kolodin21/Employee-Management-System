@@ -10,11 +10,11 @@ namespace Client.HTTP
         // Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static string AddLeaveUri() => $"{Host}/leave/new";
-        public static string CancelLeaveUri(int leaveId) => $"{Host}/leaves/{leaveId}";
-        public static string GetLeavesByEmployeeUri(int id) => $"{Host}/leaves/{id}";
-        public static string GetLeavesByDateRangeUri(DateTime start, DateTime end) => $"{Host}/leaves/{start:yyyy-MM-dd}/{end:yyyy-MM-dd}";
-        public static string GetLeaveBalanceUri(int employeeId) => $"{Host}/leaves/remainder/{employeeId}";
+        public static Uri AddLeaveUri() => new Uri($"{Host}/leave/new");
+        public static Uri CancelLeaveUri(int leaveId) => new Uri($"{Host}/leaves/{leaveId}");
+        public static Uri GetLeavesByEmployeeUri(int id) => new Uri($"{Host}/leaves/{id}");
+        public static Uri GetLeavesByDateRangeUri(DateTime start, DateTime end) => new Uri($"{Host}/leaves/{start:yyyy-MM-dd}/{end:yyyy-MM-dd}");
+        public static Uri GetLeaveBalanceUri(int employeeId) => new Uri($"{Host}/leaves/remainder/{employeeId}");
 
 
         public async Task<bool> AddLeaveAsync(Leave leave) =>

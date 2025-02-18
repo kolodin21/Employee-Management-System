@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Models;
 using NLog;
 using Server.BL;
@@ -22,7 +23,6 @@ using Server.BL;
 //#region EmployeeRepository
 //app.MapPost("/employees/new", async (Employee emp) => await employeeService.AddEmployeeAsync(emp));
 
-//app.MapGet("/employees", async () => await employeeService.GetEmployeesAsync());
 //app.MapGet("/employee/{id:int}", async (int id) => await employeeService.GetEmployeeByIdAsync(id));
 
 //app.MapGet("/department/{id:int}/employees", async (int id) => await employeeService.GetEmployeesByDepartmentAsync(id));
@@ -61,45 +61,47 @@ using Server.BL;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IServiceCollection service = new ServiceCollection();
-
-// Регистрируем все сервисы
-builder.Services.AddScoped<DepartmentService>();
-builder.Services.AddScoped<EmployeeService>();
-builder.Services.AddScoped<LeaveService>();
-builder.Services.AddScoped<PositionService>();
-builder.Services.AddScoped<ReportSearchService>();
-
-// Регистрируем ManagerService и передаём в него зависимости
-builder.Services.AddScoped<ManagerService>();
-
-// Настройка CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+// Регистрируем сервисы в builder.Services
+builder.Services.AddSingleton<DepartmentService>();
+builder.Services.AddSingleton<EmployeeService>();
+builder.Services.AddSingleton<LeaveService>();
+builder.Services.AddSingleton<PositionService>();
+builder.Services.AddSingleton<ReportSearchService>();
+builder.Services.AddSingleton<ManagerService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+// Получаем сервис через `app.Services`
+var serviceManager = app.Services.GetRequiredService<ManagerService>();
 
-// Глобальная обработка исключений
-app.UseExceptionHandler("/error");
+//// Настройка CORS
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll", builder =>
+//    {
+//        builder.AllowAnyOrigin()
+//               .AllowAnyMethod()
+//               .AllowAnyHeader();
+//    });
+//});
 
-var Logger = LogManager.GetCurrentClassLogger();
 
-async Task<IResult> HttpRequestAsync(Func<Task> managerService, string message)
+//app.UseHttpsRedirection();
+//app.UseCors("AllowAll");
+
+//// Глобальная обработка исключений
+//app.UseExceptionHandler("/error");
+
+var Logger = LogManager.GetCurrentClassLogger()
+    ;
+
+
+async Task<IResult> HttpRequestAsync<T>(Func<Task<T>> managerService, string message)
 {
     try
     {
-        await managerService();
-        return Results.Ok();  // Возвращаем успешный ответ
+        var result = await managerService();
+        return Results.Ok(result);  // Возвращаем результат запроса
     }
     catch (Exception ex)
     {
@@ -123,6 +125,9 @@ app.MapGet("/employees", async (ManagerService managerService) =>
         "Error getting employees"));
 
 
+//app.MapGet("/employees", async () => await serviceManager.EmployeeService.GetEmployeesAsync());
+
+
 app.MapGet("/employee/{id:int}", async (ManagerService managerService, int id) =>
     await HttpRequestAsync(
         () => managerService.EmployeeService.GetEmployeeByIdAsync(id),
@@ -141,10 +146,10 @@ app.MapPut("/employees", async (ManagerService managerService, Employee emp) =>
         "Error updating employee"));
 
 
-app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id) =>
- await HttpRequestAsync(
-     () => managerService.EmployeeService.DeleteEmployeeAsync(id),
-     $"Error deleting employee with id {id}"));
+//app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id) =>
+// await HttpRequestAsync(
+//     () => managerService.EmployeeService.DeleteEmployeeAsync(id),
+//     $"Error deleting employee with id {id}"));
 
 #endregion
 
@@ -166,10 +171,10 @@ app.MapPut("/departments/{id:int}", async (int id, string newName, ManagerServic
     await HttpRequestAsync(() => managerService.DepartmentService.UpdateDepartmentAsync(id, newName),
         "Error updating departments"));
 
-app.MapDelete("/departments/{id:int}", async (int id, ManagerService managerService) =>
-    await HttpRequestAsync(
-        () => managerService.DepartmentService.DeleteDepartmentAsync(id),
-$"Error deleting department with id {id}"));
+//app.MapDelete("/departments/{id:int}", async (int id, ManagerService managerService) =>
+//    await HttpRequestAsync(
+//        () => managerService.DepartmentService.DeleteDepartmentAsync(id),
+//$"Error deleting department with id {id}"));
 
 #endregion
 
@@ -209,11 +214,11 @@ app.MapPost("/leave/new", async (Leave leave, ManagerService managerService) =>
         "Error adding leave")
 );
 
-app.MapPut("/leaves/{leaveId:int}", async (int leaveId, ManagerService managerService) =>
-    await HttpRequestAsync(
-        () => managerService.LeaveService.CancelLeaveAsync(leaveId),
-        $"Error canceling leave with id {leaveId}")
-);
+//app.MapPut("/leaves/{leaveId:int}", async (int leaveId, ManagerService managerService) =>
+//    await HttpRequestAsync(
+//        () => managerService.LeaveService.CancelLeaveAsync(leaveId),
+//        $"Error canceling leave with id {leaveId}")
+//);
 
 app.MapGet("/leaves/{id:int}", async (int id, ManagerService managerService) =>
     await HttpRequestAsync(
