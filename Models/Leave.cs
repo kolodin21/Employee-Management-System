@@ -3,7 +3,7 @@
     //Тип отсутствия
     public enum LeaveType
     {
-        Vacation = 1, //Отпуск
+        Vacation, //Отпуск
         Medical,      //Больничный
         Dismissed     //Уволен
     }
@@ -18,7 +18,7 @@
         public DateTime EndDate { get; set; }    // дата окончания.
     }
 
-    public class LeaveDto : Person
+    public class LeaveDto : Leave
     {
         public int LeaveId { get; set; }         // Id записи
         public LeaveType LeaveType { get; set; } // Тип отсутствия 

@@ -14,7 +14,7 @@ public class DatabaseConfig
             .Build();
     }
 
-    public static string ConnectionString => Configuration["ConnectionString:TestConnection"]
+    public string ConnectionString => Configuration["ConnectionString:TestConnection"]
                                              ?? throw new InvalidOperationException(
                                                  "ConnectionStrings not found in configuration.");
 
