@@ -6,7 +6,7 @@ public class LeaveRepository
 {
     public async Task<bool> AddLeaveAsync(Leave leave)
     {
-        
+        return false;
     }
 
     public async Task<IEnumerable<LeaveDto>> GetLeavesByEmployeeAsync(int employeeId)
@@ -26,7 +26,7 @@ public class LeaveRepository
     
     public async Task<bool> CancelLeaveAsync(int leaveId)
     {
-        
+        return false;
     }
     
 }

@@ -1,4 +1,6 @@
-﻿using System.Reactive;
+﻿using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Controls;
 using Client.GUI.View;
 using ReactiveUI;
@@ -35,6 +37,20 @@ namespace Client.GUI.ViewModel
                 Reset();
                 IsLoadEmployeeCommand = true;
             }, CanLoadEmployee());
+
+            //LoadEmployeeCommand.ThrownExceptions.Subscribe(ex =>
+            //{
+            //    Debug.WriteLine($"Ошибка в LoadEmployeeCommand: {ex}");
+            //});
+
+            //// Выполняем команду безопасно
+            //Observable.Start(() => LoadEmployeeCommand.Execute().Subscribe());
+
+            //LoadEmployeeCommand.Subscribe(_ =>
+            //{
+            //    IsLoadEmployeeCommand = false; // Сброс состояния
+            //});
+
 
             //OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
         }

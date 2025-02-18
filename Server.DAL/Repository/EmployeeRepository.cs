@@ -27,12 +27,12 @@ public class EmployeeRepository
 
     public async Task<bool> UpdateEmployeeAsync(Employee employee)
     {
-
+        return false;
     }
 
     public async Task<bool> DeleteEmployeeAsync(int employeeId)
     {
-
+        return false;
     }
 
 }

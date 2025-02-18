@@ -4,6 +4,7 @@
              xmlns:viewModel="clr-namespace:Client.GUI.ViewModel"
              xmlns:component="clr-namespace:Client.GUI.Components">
 
+
     <UserControl.DataContext>
         <viewModel:EmployeeAllPageViewModel/>
     </UserControl.DataContext>
@@ -132,9 +133,10 @@
                     ItemsSource="{Binding PositionList}"
                     SelectedItem="{Binding SelectedPosition,Mode=TwoWay}"/>
 
-                <component:InputControl
+                <component:DataPickerControl
                     Label="Дата устройства"
-                    InputText="{Binding HireDate,StringFormat=\{0:dd.MM.yyyy\}}"/>
+                    SelectedDate="{Binding HireDate}"/>
+
 
                 <Button Content="Сохранить"
                         Command="{Binding SaveCommand}"

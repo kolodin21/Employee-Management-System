@@ -17,7 +17,7 @@
     }
 
 
-    public class EmployeeDto : Person
+    public class EmployeeDto : Person, IEquatable<EmployeeDto>
     {
         public int DepartmentId { get; set; }
         public string Department { get; set; } // Название департамента
@@ -25,31 +25,27 @@
         public string Position { get; set; }   // Название должности
         public DateTime HireDate { get; set; } // Дата устройства на работу
 
-        //public override bool Equals(object? obj)
-        //{
-        //    if (obj is EmployeeDto other)
-        //    {
-        //        return Id == other.Id &&
-        //               Name == other.Name &&
-        //               Surname == other.Surname &&
-        //               Patronymic == other.Patronymic &&
-        //               DepartmentId == other.DepartmentId &&
-        //               Department == other.Department &&
-        //               PositionId == other.PositionId &&
-        //               Position == other.Position &&
-        //               HireDate == other.HireDate;
-        //    }
-        //    return false;
-        //}
+        public bool Equals(EmployeeDto? other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
 
-        //public override int GetHashCode()
-        //{
-        //    return HashCode.Combine(
-        //        Id,
-        //        HashCode.Combine(Name, Surname, Patronymic),
-        //        HashCode.Combine(DepartmentId, Department),
-        //        HashCode.Combine(PositionId, Position, HireDate)
-        //    );
-        //}
+            return Id == other.Id &&
+                   DepartmentId == other.DepartmentId &&
+                   Department == other.Department &&
+                   PositionId == other.PositionId &&
+                   Position == other.Position &&
+                   HireDate == other.HireDate;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is EmployeeDto other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, DepartmentId, Department, PositionId, Position, HireDate);
+        }
     }
 }

@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Client.GUI.Components.DataPickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Input">
+
+    <Grid DataContext="{Binding ElementName=Input}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Заголовок (лейбл) -->
+        <Label Content="{Binding Label, Mode=OneWay}"
+               Grid.Column="0"
+               Style="{StaticResource InputLabelStyle}"/>
+
+        <!-- Поле ввода -->
+        <DatePicker Grid.Column="1"
+                    SelectedDate="{Binding SelectedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource DatePickerStyle}"/>
+
+    </Grid>
+
+</UserControl>

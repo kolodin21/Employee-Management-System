@@ -9,7 +9,6 @@ using System.Windows;
 
 namespace Client.GUI.ViewModel
 {
-
     public class EmployeeAllPageViewModel : ViewModelBase
     {
         //Логгер
@@ -24,7 +23,7 @@ namespace Client.GUI.ViewModel
         [Reactive] public string Name { get; set; }
         [Reactive] public string Surname { get; set; }
         [Reactive] public string? Patronymic { get; set; }
-        [Reactive] public string? HireDate { get; set; }
+        [Reactive] public DateTime HireDate { get; set; }
 
         public ReactiveCommand<Unit,Unit>  EditEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
@@ -39,7 +38,6 @@ namespace Client.GUI.ViewModel
         [Reactive] public KeyValuePair<int, string> SelectedPosition{ get; set; }
         public List<KeyValuePair<int, string>> DepartmentsList { get; set; }
         public List<KeyValuePair<int, string>> PositionList { get; set; }
-
 
         //Коллекция сотрудников
         public ObservableCollection<EmployeeDto> Employees { get; set; } =
@@ -104,6 +102,7 @@ namespace Client.GUI.ViewModel
             //LoadCommand.Execute().Subscribe();
 
         }
+
         //Todo Переделать логику под вызовы из бд
         private async Task DeleteEmployeeAsync()
         {
@@ -123,8 +122,7 @@ namespace Client.GUI.ViewModel
 
                     if (!IsActiveButtonEdit)
                     {
-                        Reset();
-                        IsOpenWindowAllEmployee = true;
+                        Back();
                     }
                 }
                 else
@@ -138,72 +136,15 @@ namespace Client.GUI.ViewModel
                 Logger.Info("Удаление сотрудника отменено");
             }
         }
-        private IObservable<bool> CanExecSelectedEmployee()
-        {
-            return this.WhenAnyValue(vm => vm.SelectedEmployee)
-                .Select(selectedEmployee => selectedEmployee != null);
-        }
-
-        private IObservable<bool> CanSave()
-        {
-
-            return this.WhenAnyValue(
-                vm => vm.Name,
-                vm => vm.Surname,
-                vm => vm.Patronymic,
-                vm => vm.SelectedDepartment,
-                vm => vm.SelectedPosition,
-                vm => vm.HireDate,
-                (name, surname, patronymic, department, position, hireDate) =>
-                    !string.IsNullOrWhiteSpace(name) &&
-                    !string.IsNullOrWhiteSpace(surname) &&
-                    !string.IsNullOrWhiteSpace(patronymic) &&
-                    department.Key != 0 &&
-                    position.Key != 0 &&
-                    !string.IsNullOrWhiteSpace(hireDate) &&
-                    (OriginalEmployee != null &&
-                     (name != OriginalEmployee.Name ||
-                      surname != OriginalEmployee.Surname ||
-                      patronymic != OriginalEmployee.Patronymic ||
-                      department.Key != OriginalEmployee.DepartmentId ||
-                      position.Key != OriginalEmployee.PositionId ||
-                      hireDate != OriginalEmployee.HireDate.ToString("dd.MM.yyyy")))
-            ); ;
-        }
-
-        private void EditEmployee()
-        {
-            Reset();
-            IsOpenWindowEdit = true;
-
-            IsActiveButtonEdit = false;
-
-            SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee!.Department);
-            SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee!.Position);
-
-            Name = SelectedEmployee!.Name;
-            Surname = SelectedEmployee!.Surname;
-            Patronymic = SelectedEmployee.Patronymic;
-            HireDate = SelectedEmployee.HireDate.ToString("dd.MM.yyyy");
-
-            // Сохранение исходного состояния
-            OriginalEmployee = new EmployeeDto
-            {
-                Id = SelectedEmployee.Id,
-                Name = SelectedEmployee.Name,
-                Surname = SelectedEmployee.Surname,
-                Patronymic = SelectedEmployee.Patronymic,
-                DepartmentId = SelectedEmployee.DepartmentId,
-                Department = SelectedEmployee.Department,
-                PositionId = SelectedEmployee.PositionId,
-                Position = SelectedEmployee.Position,
-                HireDate = SelectedEmployee.HireDate
-            };
-
-        }
-
         private async Task Save()
         {
+            if(SelectedEmployee!.Equals(OriginalEmployee))
+            {
+                MessageBox.Show("Данные не изменены");
+                Back();
+                return;
+            }
+
             SelectedEmployee!.Department = SelectedDepartment.Value;
             SelectedEmployee!.Position = SelectedPosition.Value;
 
@@ -246,8 +187,6 @@ namespace Client.GUI.ViewModel
                 MessageBox.Show("Ошибка обновления сотрудника");
             }
         }
-
-
         private async Task LoadDateBase()
         {
             //Todo : Сделать кэш в сервисах и обращаться к нему если есть данные
@@ -265,18 +204,80 @@ namespace Client.GUI.ViewModel
             }
         }
 
+        private IObservable<bool> CanExecSelectedEmployee()
+        {
+            return this.WhenAnyValue(vm => vm.SelectedEmployee)
+                .Select(selectedEmployee => selectedEmployee != null);
+        }
+        private IObservable<bool> CanSave()
+        {
+
+            return this.WhenAnyValue(
+                vm => vm.Name,
+                vm => vm.Surname,
+                vm => vm.Patronymic,
+                vm => vm.SelectedDepartment,
+                vm => vm.SelectedPosition,
+                vm => vm.HireDate,
+                (name, surname, patronymic, department, position, hireDate) =>
+                    !string.IsNullOrWhiteSpace(name) &&
+                    !string.IsNullOrWhiteSpace(surname) &&
+                    !string.IsNullOrWhiteSpace(patronymic) &&
+                    department.Key != 0 &&
+                    position.Key != 0 &&
+                    (OriginalEmployee != null &&
+                     (name != OriginalEmployee.Name ||
+                      surname != OriginalEmployee.Surname ||
+                      patronymic != OriginalEmployee.Patronymic ||
+                      department.Key != OriginalEmployee.DepartmentId ||
+                      position.Key != OriginalEmployee.PositionId ||
+                      hireDate != OriginalEmployee.HireDate))
+            ); ;
+        }
+
+        private void EditEmployee()
+        {
+            Reset();
+            IsOpenWindowEdit = true;
+
+            IsActiveButtonEdit = false;
+
+            SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee!.Department);
+            SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee!.Position);
+
+            Name = SelectedEmployee!.Name;
+            Surname = SelectedEmployee!.Surname;
+            Patronymic = SelectedEmployee.Patronymic;
+            HireDate = SelectedEmployee.HireDate;
+
+            //Todo НЕ работает проверка на изменение данных, кнопка не правильно активируется
+            // Сохранение исходного состояния
+            OriginalEmployee = new EmployeeDto
+            {
+                Id = SelectedEmployee.Id,
+                Name = SelectedEmployee.Name,
+                Surname = SelectedEmployee.Surname,
+                Patronymic = SelectedEmployee.Patronymic,
+                DepartmentId = SelectedEmployee.DepartmentId,
+                Department = SelectedEmployee.Department,
+                PositionId = SelectedEmployee.PositionId,
+                Position = SelectedEmployee.Position,
+                HireDate = SelectedEmployee.HireDate
+            };
+
+        }
         private void Back()
         {
             Reset();
             IsOpenWindowAllEmployee = true;
             IsActiveButtonEdit = true;
             SelectedEmployee = null;
+            OriginalEmployee = null;
         }
         private void Reset()
         {
             IsOpenWindowEdit = false;
             IsOpenWindowAllEmployee = false;
         }
-
     }
 }
