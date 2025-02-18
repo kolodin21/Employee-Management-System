@@ -2,7 +2,110 @@
 
 
 ### Получение списка сотрудников
-GET https://localhost:5248/employees
+GET http://localhost:5248/employees
 Accept: application/json
+
+### Получение сотрудника по ID
+GET http://localhost:5248/employee/{id}
+Accept: application/json
+
+### Получение сотрудников по департаменту
+GET http://localhost:5248/department/{id}/employees
+Accept: application/json
+
+### Удаление сотрудника
+DELETE http://localhost:5248/employees/{id}
+Accept: application/json
+
+
+### Обновление информации о сотруднике
+PUT http://localhost:5248/employees
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "departmentId": 2,
+  "positionId": 3,
+  "hireDate": "2022-01-01T00:00:00",
+  "dateOfDismissal": null,
+  "isActive": true
+}
+
+### Добавление нового сотрудника
+POST http://localhost:5248/employees/new
+Content-Type: application/json
+{
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "departmentId": 2,
+  "positionId": 3,
+  "hireDate": "202
+  }
+  
+#############################################################
+
+### Получение списка департаментов
+  GET http://localhost:5248/departments
+  Accept: application/json
+
+### Получение всех департаментов
+  GET http://localhost:5248/departments
+  Accept: application/json
+
+### Обновление информации о департаменте
+  PUT http://localhost:5248/departments/{id}
+  Content-Type: application/json
+  {
+    "id": 1,
+    "name": "Отдел кадров"
+  }
+
+#############################################################
+
+### Получение списка должностей
+  GET http://localhost:5248/positions
+  Accept: application/json
+
+### Обновление информации о должности
+  PUT http://localhost:5248/positions/{id}
+  Content-Type: application/json
+  {
+    "id": 1,
+    "name": "Директор"
+  }
+
+### Удалние должности
+  DELETE http://localhost:5248/positions/{id}
+  Accept: application/json
+
+
+### Добавление новой должности
+  POST http://localhost:5248/positions/new
+  Content-Type: application/json
+  {
+    "name": "Директор"
+  }
+
+  
+#############################################################
+
+### Добавление отпуска
+POST http://localhost:5248/leave/new
+Content-Type: application/json
+{
+  "employeeId": 1,
+  "leaveType": 1,"
+  "startDate": "2022-01-01T00:00:00",
+  "endDate": "2022-01-10T00:00:00"
+}
+
+### TODO : Получение списка отпусков
+
+
+
+
+
 
 

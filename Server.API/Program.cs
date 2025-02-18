@@ -71,30 +71,10 @@ builder.Services.AddSingleton<ManagerService>();
 
 var app = builder.Build();
 
-// Получаем сервис через `app.Services`
-var serviceManager = app.Services.GetRequiredService<ManagerService>();
+// Глобальная обработка исключений
+app.UseExceptionHandler("/error");
 
-//// Настройка CORS
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowAll", builder =>
-//    {
-//        builder.AllowAnyOrigin()
-//               .AllowAnyMethod()
-//               .AllowAnyHeader();
-//    });
-//});
-
-
-//app.UseHttpsRedirection();
-//app.UseCors("AllowAll");
-
-//// Глобальная обработка исключений
-//app.UseExceptionHandler("/error");
-
-var Logger = LogManager.GetCurrentClassLogger()
-    ;
-
+var logger = LogManager.GetCurrentClassLogger();
 
 async Task<IResult> HttpRequestAsync<T>(Func<Task<T>> managerService, string message)
 {
@@ -105,7 +85,7 @@ async Task<IResult> HttpRequestAsync<T>(Func<Task<T>> managerService, string mes
     }
     catch (Exception ex)
     {
-        Logger.Error(ex, message);
+        logger.Error(ex, message);
         return Results.Problem(message);  // Возвращаем ошибку с сообщением
     }
 }
@@ -124,8 +104,6 @@ app.MapGet("/employees", async (ManagerService managerService) =>
         () => managerService.EmployeeService.GetEmployeesAsync(),
         "Error getting employees"));
 
-
-//app.MapGet("/employees", async () => await serviceManager.EmployeeService.GetEmployeesAsync());
 
 
 app.MapGet("/employee/{id:int}", async (ManagerService managerService, int id) =>
@@ -270,4 +248,4 @@ app.MapGet("/reports/search", async (string lastName, string firstName, ManagerS
 
 app.Run();
 
-Logger.Info("Сервер запущен");
+logger.Info("Сервер запущен");
