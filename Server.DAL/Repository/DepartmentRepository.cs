@@ -8,20 +8,27 @@ public class DepartmentRepository : BaseRepository
 
     public async Task<bool> AddDepartmentAsync(string name)
     {
-        var connection = new NpgsqlConnection(ConnectionString);
-        const string sql = "SELECT * FROM function_add_department(@dep_name)";
+        await using var connection = new NpgsqlConnection(ConnectionString);
+
+        const string sql = "SELECT function_add_department(@dep_name)";
+
         await using var command = new NpgsqlCommand(sql, connection);
+
         command.Parameters.AddWithValue("@dep_name", name);
+
         await connection.OpenAsync();
-        var reader = await command.ExecuteReaderAsync();
-        var departmentId = 0;
-        while (await reader.ReadAsync())
-        {
-            //departmentId = reader.GetInt(0);
-        }
-        await connection.CloseAsync();
-        return false;
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            return false;
+
+        int departmentId = reader.GetInt32(0);
+
+        return departmentId > 0;
+
     }
+
 
     public async Task<bool> UpdateDepartmentAsync(int id, string name)
     {
@@ -40,14 +47,21 @@ public class DepartmentRepository : BaseRepository
         await connection.CloseAsync();
         return result;
     }
+
     public async Task<IEnumerable<Department>> GetAllDepartmentsAsync()
     {
         var connection = new NpgsqlConnection(ConnectionString);
+
         const string sql = "SELECT * FROM table_departments";
+
         await using var command = new NpgsqlCommand(sql, connection);
+
         await connection.OpenAsync();
+
         var result = await command.ExecuteReaderAsync();
+
         var departments = new List<Department>();
+
         while (await result.ReadAsync())
         {
             var department = new Department()

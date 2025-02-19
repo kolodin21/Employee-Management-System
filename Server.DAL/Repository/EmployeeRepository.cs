@@ -8,7 +8,9 @@ public class EmployeeRepository : BaseRepository
     public async Task<bool> AddEmployeeAsync(Employee employee)
     {
         var connection = new NpgsqlConnection(ConnectionString);
+
         const string sql = "SELECT function_add_employee(@person_name,@person_sur_name,@person_patronymic,@department_name,@position_name,@hire_date,@date_of_dismissal)";
+
         await using var command = new NpgsqlCommand(sql, connection);
 
         command.Parameters.AddWithValue("@name", employee.Name);
