@@ -68,11 +68,11 @@
                        Style="{StaticResource LabelMenuStyle}"/>
 
                 <Button Content="Все сотрудники"
-                        Command="{Binding LoadEmployeeCommand}"
+                        Command="{Binding AllEmployeeCommand}"
                         Style="{StaticResource ButtonMenuStyle}"/>
 
                 <Button Content="Добавление сотрудника"
-                        Command="{Binding OpenAddEmployeeCommand}"
+                        Command="{Binding AddEmployeeCommand}"
                         Style="{StaticResource ButtonMenuStyle}"/>
 
                 <Button Content="Учет отпусков и больничных"

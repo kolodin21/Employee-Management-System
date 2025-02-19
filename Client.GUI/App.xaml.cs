@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using Client.GUI.View;
+using Client.GUI.View.AdminPageMenu;
 using Client.GUI.View.LogInSystem;
 using Client.GUI.ViewModel;
+using Client.GUI.ViewModel.AdminPageMenu;
 using Client.GUI.ViewModel.LogInSystem;
 using Client.HTTP;
 using Microsoft.Extensions.DependencyInjection;

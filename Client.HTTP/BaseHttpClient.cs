@@ -8,7 +8,6 @@ namespace Client.HTTP
     public abstract class BaseHttpClient
     {
         protected static readonly HttpClient Client = new();
-
         protected static string? Host { get; set; } = HttpConfig.Host;
 
 
@@ -32,7 +31,6 @@ namespace Client.HTTP
                 return false;
             }
         }
-
 
         public async Task<IEnumerable<T>> HttpRequestResultAsync<T>(
             Func<Task<HttpResponseMessage>> clientRequest, Logger logger, string message)
@@ -62,7 +60,6 @@ namespace Client.HTTP
                 return [];
             }
         }
-
 
         public async Task<T?> HttpRequestResultSingleAsync<T>(
             Func<Task<HttpResponseMessage>> clientRequest, Logger logger, string message)

@@ -22,12 +22,8 @@ namespace Client.HTTP
         public async Task<IEnumerable<Department>> GetDepartmentsAsync() =>
             await HttpRequestResultAsync<Department>(async () => await Client.GetAsync(GetDepartmentsUri()), Logger, "Ошибка получения департаментов");
 
-
         public async Task<bool> UpdateDepartmentAsync(int id, string newName) =>
             await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdateDepartmentUri(id), new { Name = newName }), Logger, "Ошибка обновления департамента");
-
-        public async Task<bool> DeleteDepartmentAsync(int id) =>
-            await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeleteDepartmentUri(id)), Logger, "Ошибка удаления департамента");
 
     }
 }
