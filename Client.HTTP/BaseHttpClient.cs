@@ -2,19 +2,14 @@
 using Client.HTTP.Configuration;
 using Newtonsoft.Json;
 using NLog;
-using static System.Net.WebRequestMethods;
 
 namespace Client.HTTP
 {
     public abstract class BaseHttpClient
     {
         protected static readonly HttpClient Client = new();
-        protected static string Host { get; set; }
+        protected static string? Host { get; set; } = HttpConfig.Host;
 
-        static BaseHttpClient()
-        {
-            Host = "http://localhost:5248";
-        }
    
 
         public async Task<bool> HttpRequestBoolAsync(Func<Task<HttpResponseMessage>> clientRequest, Logger logger, string message)
