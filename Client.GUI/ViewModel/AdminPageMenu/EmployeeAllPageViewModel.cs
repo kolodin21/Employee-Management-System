@@ -1,13 +1,13 @@
-﻿using Models;
-using NLog;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
+using Models;
+using NLog;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
-namespace Client.GUI.ViewModel
+namespace Client.GUI.ViewModel.AdminPageMenu
 {
     public class EmployeeAllPageViewModel : ViewModelBase
     {
@@ -98,8 +98,8 @@ namespace Client.GUI.ViewModel
                 new(14, "Бухгалтер"),
             };
 
-            LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);
-            LoadCommand.Execute().Subscribe();
+            //LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);
+            //LoadCommand.Execute().Subscribe();
 
         }
 

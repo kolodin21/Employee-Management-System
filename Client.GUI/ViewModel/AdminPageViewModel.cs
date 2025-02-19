@@ -3,6 +3,8 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using Client.GUI.View;
+using Client.GUI.View.AdminPageMenu;
+using NLog;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -10,11 +12,12 @@ namespace Client.GUI.ViewModel
 {
     public class AdminPageViewModel : ViewModelBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         [Reactive] public UserControl? CurrentContentAdminPage { get; set; }
 
         //Основное меню администратора
-        public ReactiveCommand<Unit, Unit> LoadEmployeeCommand { get; }
-        public ReactiveCommand<Unit, Unit> OpenAddEmployeeCommand { get; }
+        public ReactiveCommand<Unit, Unit> AllEmployeeCommand { get; }
+        public ReactiveCommand<Unit, Unit> AddEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> AccountingCommand { get; }
         public ReactiveCommand<Unit, Unit> GeneratingReportsCommand { get; }
         public ReactiveCommand<Unit, Unit> ChangingCommand { get; }
@@ -31,28 +34,25 @@ namespace Client.GUI.ViewModel
         public AdminPageViewModel()
         {
 
-            LoadEmployeeCommand = ReactiveCommand.Create(() =>
+            AllEmployeeCommand = ReactiveCommand.Create(() =>
             {
                 CurrentContentAdminPage = GetPage<EmployeeAllPageView>();
                 Reset();
                 IsLoadEmployeeCommand = true;
             }, CanLoadEmployee());
 
-            //LoadEmployeeCommand.ThrownExceptions.Subscribe(ex =>
-            //{
-            //    Debug.WriteLine($"Ошибка в LoadEmployeeCommand: {ex}");
-            //});
 
-            //// Выполняем команду безопасно
-            //Observable.Start(() => LoadEmployeeCommand.Execute().Subscribe());
-
-            //LoadEmployeeCommand.Subscribe(_ =>
-            //{
-            //    IsLoadEmployeeCommand = false; // Сброс состояния
-            //});
+            // Подписка на исключения, выбрасываемые командой
+            AllEmployeeCommand.ThrownExceptions.Subscribe(ex =>
+            {
+               Logger.Warn($"Ошибка в AllEmployeeCommand: {ex}");
+                // Здесь можно добавить дополнительную обработку ошибок, например, логирование или отображение сообщения пользователю
+            });
 
 
-            //OpenAddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
+            //AddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
+
+            ExitCommand = ReactiveCommand.Create(ExecExit);
         }
 
         private IObservable<bool> CanLoadEmployee()
