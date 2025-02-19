@@ -133,10 +133,10 @@ app.MapPut("/employees", async (ManagerService managerService, Employee emp) =>
 #region DepartmentService
 //app.MapGet("/departments", async () => await departmentService.GetDepartmentsAsync());
 //Todo Добавить реализацию метода GetDepartmentsAsync
-//app.MapGet("/departments", async (ManagerService managerService) =>
-//    await HttpRequestAsync(
-//        () => managerService.DepartmentService.GetDepartmentsAsync(),
-//        "Error getting departments"));
+app.MapGet("/departments", async (ManagerService managerService) =>
+    await HttpRequestAsync(
+        () => managerService.DepartmentService.GetDepartmentsAsync(),
+        "Error getting departments"));
 
 app.MapPost("/departments/new", async (Department department, ManagerService managerService) =>
     await HttpRequestAsync(

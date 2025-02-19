@@ -9,7 +9,6 @@ namespace Client.HTTP
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        
         public static Uri DeleteEmployeeUri(int id) => new Uri($"{Host}/employee/{id}");
         public static Uri AddEmployeeUri() => new Uri($"{Host}/employees/new");
         public static Uri GetEmployeesUri() => new Uri($"{Host}/employees");
@@ -23,7 +22,6 @@ namespace Client.HTTP
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync() =>
             await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesUri()), Logger, "Ошибка получения сотрудников");
-
 
         public async Task<EmployeeDto?> GetEmployeeByIdAsync(int id) =>
             await HttpRequestResultSingleAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeeByIdUri(id)), Logger, $"Ошибка получения сотрудника с id {id}");

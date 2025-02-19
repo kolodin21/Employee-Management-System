@@ -62,6 +62,14 @@ Content-Type: application/json
     "name": "Отдел кадров"
   }
 
+  //Todo исправить запрос
+ ### Добавление департаменте
+  POST http://localhost:5248/departments/new
+  Content-Type: application/json
+  {
+    "name": "Тест"
+  }
+
 #############################################################
 
 ### Получение списка должностей
