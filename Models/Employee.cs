@@ -10,10 +10,11 @@
     
     public class Employee : Person
     {
+        public int EmployeeId { get; set; }
         public int DepartmentId { get; set; } 
         public int PositionId { get; set; }
         public DateTime HireDate { get; set; } // Дата устройства на работу
-        public bool IsActive { get; set; }     // статус сотрудника (активный/уволенный).
+        public DateTime DateOfDismissal { get; set; }    // статус сотрудника (активный/уволенный).
     }
     
     public class EmployeeDto : Person, IEquatable<EmployeeDto>
@@ -25,8 +26,7 @@
         public int PositionId { get; set; }
         public string Position { get; set; }   // Название должности
         public DateTime HireDate { get; set; } // Дата устройства на работу
-
-        public DateTime DateOfDismissal { get; set; } // Дата увольнения
+        public DateTime DateOfDismissal { get; set; }
 
         public bool Equals(EmployeeDto? other)
         {
