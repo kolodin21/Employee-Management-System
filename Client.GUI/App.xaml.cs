@@ -45,6 +45,7 @@ namespace Client.GUI
 
 
             services.AddViewWithViewModelTransient<EmployeeAllPageView, EmployeeAllPageViewModel>();
+            services.AddViewWithViewModelTransient<AddEmployeePageView, AddEmployeePageViewModel>();
         }
 
     }

@@ -99,7 +99,9 @@
                 Visibility="{Binding IsOpenWindowEdit,Converter={StaticResource BoolToVis}}"
                 Grid.Row="1">
 
-                <Grid.ColumnDefinitions>
+                <component:EmployeeForm FormTitle="Редактирование сотрудника"/>
+
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
@@ -141,7 +143,7 @@
                 <Button Content="Сохранить"
                         Command="{Binding SaveCommand}"
                         Style="{StaticResource ButtonMenuStyle}"/>
-                </StackPanel>
+                </StackPanel>-->
             </Grid>
 
         </Grid>

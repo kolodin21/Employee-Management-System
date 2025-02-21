@@ -1,10 +1,56 @@
 ﻿<UserControl x:Class="Client.GUI.View.AdminPageMenu.AddEmployeePageView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:component="clr-namespace:Client.GUI.Components"
+             xmlns:adminPageMenu="clr-namespace:Client.GUI.ViewModel.AdminPageMenu">
 
 
-    <Grid>
-            
+    <UserControl.DataContext>
+        <adminPageMenu:AddEmployeePageViewModel/>
+    </UserControl.DataContext>
+
+
+    <Grid Background="AntiqueWhite" >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Label Content="Действия"
+                   Style="{StaticResource LabelMenuStyle}"/>
+
+            <Button Content="Редактирование"
+                    Command="{Binding EditEmployeeCommand}"
+                    Style="{StaticResource ButtonSmallMenuStyle}"/>
+
+            <Button Content="Удаление"
+                    Command="{Binding DeleteEmployeeCommand}"
+                    Style="{StaticResource ButtonSmallMenuStyle}"/>
+
+            <Button Content="Назад"
+                    Command="{Binding BackCommand}"
+                    Style="{StaticResource ButtonSmallMenuStyle}"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label 
+              Grid.Row="0"
+              Content="Все сотрудники компании "
+              Style="{StaticResource Heading}"/>
+
+            <Grid 
+              Grid.Row="1">
+                <component:EmployeeForm FormTitle="Добавление нового сотрудника" />
+            </Grid>
+        </Grid>
     </Grid>
 
 </UserControl>

@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Reactive;
 using System.Windows.Controls;
-using Client.GUI.View;
 using Client.GUI.View.AdminPageMenu;
 using NLog;
 using ReactiveUI;
@@ -41,12 +38,17 @@ namespace Client.GUI.ViewModel
                 IsLoadEmployeeCommand = true;
             }, CanLoadEmployee());
 
+            AddEmployeeCommand = ReactiveCommand.Create(() =>
+            {
+                CurrentContentAdminPage = GetPage<AddEmployeePageView>();
+                Reset();
+                IsOpenAddEmployeeCommand = true;
+            });
 
             // Подписка на исключения, выбрасываемые командой
             AllEmployeeCommand.ThrownExceptions.Subscribe(ex =>
             {
                Logger.Warn($"Ошибка в AllEmployeeCommand: {ex}");
-                // Здесь можно добавить дополнительную обработку ошибок, например, логирование или отображение сообщения пользователю
             });
 
 
