@@ -7,28 +7,29 @@ public class EmployeeRepository : BaseRepository
 {
     public async Task<bool> AddEmployeeAsync(Employee employee)
     {
-        var connection = new NpgsqlConnection(ConnectionString);
+        await using var connection = new NpgsqlConnection(ConnectionString);
 
-        const string sql = "SELECT function_add_employee(@person_name,@person_sur_name,@person_patronymic,@department_name,@position_name,@hire_date,@date_of_dismissal)";
+        const string sql = "SELECT function_add_employee(@name,@surname,@patronymic,@department_id,@position_id,@hire_date)";
 
         await using var command = new NpgsqlCommand(sql, connection);
 
         command.Parameters.AddWithValue("@name", employee.Name);
-        command.Parameters.AddWithValue("@sur_name", employee.Surname);
-        command.Parameters.AddWithValue("@patronymic", employee.Patronymic);
-       // command.Parameters.AddWithValue("@department_name", employee.Department);
-        //command.Parameters.AddWithValue("@position_name", employee.Position);
+        command.Parameters.AddWithValue("@surname", employee.Surname);
+        command.Parameters.AddWithValue("@patronymic", employee.Patronymic ?? (object)DBNull.Value);
+        command.Parameters.AddWithValue("@department_id", employee.DepartmentId);
+        command.Parameters.AddWithValue("@position_id", employee.PositionId);
         command.Parameters.AddWithValue("@hire_date", employee.HireDate);
-        command.Parameters.AddWithValue("@date_of_dismissal", employee.DateOfDismissal);
 
         await connection.OpenAsync();
-        var reader = await command.ExecuteReaderAsync();
+
+        await using var reader = await command.ExecuteReaderAsync();
+
         var result = false;
+
         while (await reader.ReadAsync())
         {
-            //result = reader.GetBool(0);
+            result = reader.GetFieldValue<bool>(0);
         }
-        await connection.CloseAsync();
         return result;
     }
 

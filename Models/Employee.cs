@@ -13,8 +13,8 @@
         public int DepartmentId { get; set; } 
         public int PositionId { get; set; }
         public DateTime HireDate { get; set; } // Дата устройства на работу
-        public DateOnly DateOfDismissal { get; set; } // Дата увольнения
-        public bool IsActive { get; set; } = true; // статус сотрудника (активный/уволенный).
+        public DateTime? DateOfDismissal { get; set; } // Дата увольнения
+      
     }
 
 
