@@ -101,49 +101,6 @@
 
                 <component:EmployeeForm FormTitle="Редактирование сотрудника"/>
 
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="1" Margin="0,20,0,0" >
-                   
-                <Label
-                    Content="Редактирование сотрудника"
-                       Style="{StaticResource HeadingSmall}"/>
-
-                <component:InputControl
-                    Label="Имя"
-                    InputText="{Binding Name}"/>
-
-                <component:InputControl
-                    Label="Фамилия"
-                    InputText="{Binding Surname}"/>
-
-                <component:InputControl
-                    Label="Отчество"
-                    InputText="{Binding Patronymic}"/>
-
-                <component:ComboBoxControl
-                    Label="Департамент"
-                    ItemsSource="{Binding DepartmentsList}"
-                    SelectedItem="{Binding SelectedDepartment,Mode=TwoWay}"/>
-
-                <component:ComboBoxControl
-                    Label="Должность"
-                    ItemsSource="{Binding PositionList}"
-                    SelectedItem="{Binding SelectedPosition,Mode=TwoWay}"/>
-
-                <component:DataPickerControl
-                    Label="Дата устройства"
-                    SelectedDate="{Binding HireDate}"/>
-
-
-                <Button Content="Сохранить"
-                        Command="{Binding SaveCommand}"
-                        Style="{StaticResource ButtonMenuStyle}"/>
-                </StackPanel>-->
             </Grid>
 
         </Grid>
