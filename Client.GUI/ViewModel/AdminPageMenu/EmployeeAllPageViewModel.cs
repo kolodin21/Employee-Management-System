@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using Models;
@@ -85,17 +87,11 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 new(14, "Бухгалтер"),
             };
 
-            // Подписка на исключения, выбрасываемые командой LoadCommand
+            //Загрузка данных
             LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);
-
-            LoadCommand.ThrownExceptions.Subscribe(ex =>
-            {
-                Logger.Error(ex, "Ошибка в LoadCommand");
-                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            });
-            //LoadCommand.Execute().Subscribe();
-
+            LoadCommand.Execute().Subscribe();
         }
+
 
         //Todo Переделать логику под вызовы из бд
         private async Task DeleteEmployeeAsync()
@@ -178,20 +174,40 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         }
         private async Task LoadDateBase()
         {
-            //Todo : Сделать кэш в сервисах и обращаться к нему если есть данные
-            var employees = await ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
-            //var departments = await ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
-            //var positions = await ManagerHttp.PositionHttpClient.GetPositionsAsync();
-
-
-           // PositionList = positions.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
-            // DepartmentsList = departments.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
-
-            Employees.Clear();
-
-            foreach (var item in employees)
+            try
             {
-                Employees.Add(item);
+                // Запускаем запросы одновременно
+                var employeesTask = ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
+                var departmentsTask = ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
+                var positionsTask = ManagerHttp.PositionHttpClient.GetPositionsAsync();
+
+                // Дожидаемся завершения всех запросов
+                await Task.WhenAll(employeesTask, departmentsTask, positionsTask);
+
+                var employees = employeesTask.Result;
+                var departments = departmentsTask.Result;
+                var positions = positionsTask.Result;
+
+                // Проверяем, есть ли данные
+                if (employees.Any() || departments.Any() || positions.Any())
+                {
+                    Employees.Clear();
+
+                    ForeachAddCollection(Employees, employees);
+                    PositionList = positions.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+                    DepartmentsList = departments.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+
+                }
+                else
+                {
+                    Logger.Warn("Ошибка загрузки данных: сервер вернул пустые списки");
+                    MessageBox.Show("Ошибка загрузки данных: сервер вернул пустые списки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка загрузки данных: {ex}");
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

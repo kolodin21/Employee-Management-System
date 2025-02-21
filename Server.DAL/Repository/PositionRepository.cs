@@ -29,7 +29,7 @@ public class PositionRepository : BaseRepository
 
     public async Task<IEnumerable<Position>> GetPositionsAsync()
     {
-        return null;
+        return [];
     }
     
     public async Task<bool> UpdatePositionAsync(int id, string name)

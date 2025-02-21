@@ -4,7 +4,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace Client.GUI.ViewModel.AdminPageMenu;
 
-public interface IEmployeeForm : IReactiveObject
+public interface IEmployeeForm
 {
     public string Name { get; set; }
     public string Surname { get; set; }

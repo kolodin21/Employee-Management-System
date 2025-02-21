@@ -38,6 +38,7 @@ namespace Client.GUI.ViewModel
                 IsLoadEmployeeCommand = true;
             }, CanLoadEmployee());
 
+
             AddEmployeeCommand = ReactiveCommand.Create(() =>
             {
                 CurrentContentAdminPage = GetPage<AddEmployeePageView>();
@@ -45,16 +46,12 @@ namespace Client.GUI.ViewModel
                 IsOpenAddEmployeeCommand = true;
             });
 
-            // Подписка на исключения, выбрасываемые командой
-            AllEmployeeCommand.ThrownExceptions.Subscribe(ex =>
-            {
-               Logger.Warn($"Ошибка в AllEmployeeCommand: {ex}");
-            });
-
-
             //AddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
 
             ExitCommand = ReactiveCommand.Create(ExecExit);
+
+
+            AllEmployeeCommand.Execute().Subscribe();
         }
 
         private IObservable<bool> CanLoadEmployee()

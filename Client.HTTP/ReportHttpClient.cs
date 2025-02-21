@@ -15,16 +15,28 @@ namespace Client.HTTP
 
 
         public async Task<IEnumerable<Report>> GenerateEmployeeReportAsync(int employeeId) =>
-            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateEmployeeReportUri(employeeId)), Logger, $"Ошибка генерации отчета для сотрудника с id {employeeId}");
+            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateEmployeeReportUri(employeeId)),
+                Logger,
+                $"Успешно сгенерирован отчет для сотрудника с id {employeeId}",
+                $"Ошибка генерации отчета для сотрудника с id {employeeId}");
 
         public async Task<IEnumerable<Report>> GenerateDepartmentReportAsync(int departmentId) =>
-            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateDepartmentReportUri(departmentId)), Logger, $"Ошибка генерации отчета для департамента с id {departmentId}");
+            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateDepartmentReportUri(departmentId)),
+                Logger,
+                $"Успешно сгенерирован отчет для департамента с id {departmentId}",
+                $"Ошибка генерации отчета для департамента с id {departmentId}");
 
         public async Task<IEnumerable<Report>> GenerateLeaveStatisticsAsync(DateTime start, DateTime end) =>
-            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateLeaveStatisticsUri(start, end)), Logger, $"Ошибка генерации статистики отпусков за период с {start} по {end}");
+            await HttpRequestResultAsync<Report>(async () => await Client.GetAsync(GenerateLeaveStatisticsUri(start, end)),
+                Logger,
+                $"Успешно сгенерирована статистика отпусков за период с {start:yyyy-MM-dd} по {end:yyyy-MM-dd}",
+                $"Ошибка генерации статистики отпусков за период с {start:yyyy-MM-dd} по {end:yyyy-MM-dd}");
 
         public async Task<IEnumerable<EmployeeDto>> SearchEmployeesAsync(string lastName, string firstName) =>
-            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(SearchEmployeesUri(lastName, firstName)), Logger, $"Ошибка поиска сотрудников с фамилией {lastName} и именем {firstName}");
+            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(SearchEmployeesUri(lastName, firstName)),
+                Logger,
+                $"Успешно выполнен поиск сотрудников с фамилией {lastName} и именем {firstName}",
+                $"Ошибка поиска сотрудников с фамилией {lastName} и именем {firstName}");
 
     }
 }

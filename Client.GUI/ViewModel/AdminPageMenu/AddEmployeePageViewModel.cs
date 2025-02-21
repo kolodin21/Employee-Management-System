@@ -21,6 +21,8 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         [Reactive] public KeyValuePair<int, string> SelectedDepartment { get; set; }
         [Reactive] public KeyValuePair<int, string> SelectedPosition { get; set; }
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+
 
 
         public AddEmployeePageViewModel()
@@ -55,11 +57,75 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 new(14, "Бухгалтер"),
             };
 
-            SaveCommand = ReactiveCommand.CreateFromTask(Save);
+            SaveCommand = ReactiveCommand.CreateFromTask(Save,CanSave());
+
+            LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
+            LoadCommand.Execute().Subscribe();
+        }
+       
+
+
+        private async Task LoadDateBase()
+        {
+            try
+            {
+                // Запускаем запросы одновременно
+                var departmentsTask = ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
+                var positionTask = ManagerHttp.PositionHttpClient.GetPositionsAsync();
+
+                // Дожидаемся завершения всех запросов
+                await Task.WhenAll(departmentsTask, positionTask);
+
+                var departmentsList = departmentsTask.Result;
+                var positionList = positionTask.Result;
+
+                if (positionList.Any() || departmentsList.Any())
+                {
+                    PositionList.Clear();
+                    DepartmentsList.Clear();
+                    PositionList = positionList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+                    DepartmentsList = departmentsList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+
+                    SelectedPosition = PositionList.FirstOrDefault();
+                    SelectedDepartment = DepartmentsList.FirstOrDefault();
+                }
+                else
+                {
+                    Logger.Warn("Ошибка загрузки данных: сервер вернул пустые списки");
+                    MessageBox.Show("Ошибка загрузки данных: сервер вернул пустые списки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка загрузки данных: {ex}");
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private IObservable<bool> CanSave()
+        {
+            return this.WhenAnyValue(
+                x => x.Name,
+                x => x.Surname,
+                x => x.Patronymic,
+                x => x.SelectedDepartment,
+                x => x.SelectedPosition,
+                x => x.HireDate,
+                (name, surname, patronymic, selectedDepartment, selectedPosition, hireDate) =>
+                    !string.IsNullOrWhiteSpace(name) &&
+                    !string.IsNullOrWhiteSpace(surname) &&
+                    !string.IsNullOrWhiteSpace(patronymic) &&
+                    selectedDepartment.Key != 0 &&
+                    selectedPosition.Key != 0 &&
+                    hireDate != DateTime.MinValue);
         }
 
         private async Task Save()
         {
+            //Todo добавить проверку на уникальность
+
             var employee = new Employee
             {
                 Name = Name,
@@ -71,7 +137,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 DateOfDismissal = null
             };
 
-            
             if (await ManagerHttp.EmployeeHttpClient.AddEmployeeAsync(employee))
             {
                 Logger.Info($"Новый сотрудник {Name} {Surname} {Patronymic} успешно добавлен");
@@ -82,7 +147,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 Logger.Warn($"Ошибка добавления сотрудника {Name} {Surname} {Patronymic}");
                 MessageBox.Show("Ошибка добавления сотрудника");
             }
-          
         }
     }
 }

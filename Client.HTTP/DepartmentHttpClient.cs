@@ -17,13 +17,21 @@ namespace Client.HTTP
 
         // Пример использования
         public async Task<bool> AddDepartmentAsync(Department department) =>
-            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddDepartmentUri(), department), Logger, "Ошибка добавления департамента");
+            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddDepartmentUri(), department),
+                Logger,
+                $"Успешно добавлен департамент {department.Name}",
+                "Ошибка добавления департамента");
 
         public async Task<IEnumerable<Department>> GetDepartmentsAsync() =>
-            await HttpRequestResultAsync<Department>(async () => await Client.GetAsync(GetDepartmentsUri()), Logger, "Ошибка получения департаментов");
+            await HttpRequestResultAsync<Department>(async () => await Client.GetAsync(GetDepartmentsUri()),
+                Logger,
+                "Успешно получены департаменты",
+                "Ошибка получения департаментов");
 
         public async Task<bool> UpdateDepartmentAsync(int id, string newName) =>
-            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdateDepartmentUri(id), new { Name = newName }), Logger, "Ошибка обновления департамента");
-
+            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdateDepartmentUri(id), new { Name = newName }),
+                Logger,
+                $"Успешно обновлен департамент с id {id}",
+                "Ошибка обновления департамента");
     }
 }

@@ -18,22 +18,40 @@ namespace Client.HTTP
 
 
         public async Task<bool> AddEmployeeAsync(Employee employee) =>
-            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddEmployeeUri(), employee), Logger, "Ошибка добавления сотрудника");
+            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddEmployeeUri(), employee),
+                Logger, 
+                $"Успешно добавлен сотрудник {employee.Surname} {employee.Name}", 
+                "Ошибка добавления сотрудника");
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync() =>
-            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesUri()), Logger, "Ошибка получения сотрудников");
+            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesUri()), 
+                Logger, 
+                "Успешно получены сотрудники",
+                "Ошибка получения сотрудников");
 
         public async Task<EmployeeDto?> GetEmployeeByIdAsync(int id) =>
-            await HttpRequestResultSingleAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeeByIdUri(id)), Logger, $"Ошибка получения сотрудника с id {id}");
+            await HttpRequestResultSingleAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeeByIdUri(id)), 
+                Logger, 
+                $"Сотрудник с id : {id} найден",
+                $"Ошибка получения сотрудника с id {id}");
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesByDepartmentAsync(int id) =>
-            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesByDepartmentUri(id)), Logger, $"Ошибка получения сотрудников департамента с id {id}");
+            await HttpRequestResultAsync<EmployeeDto>(async () => await Client.GetAsync(GetEmployeesByDepartmentUri(id)), 
+                Logger, 
+                $"Сотрудник с id департамента : {id} найден",
+                $"Ошибка получения сотрудников департамента с id {id}");
 
         public async Task<bool> UpdateEmployeeAsync(Employee employee) =>
-            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdateEmployeeUri(), employee), Logger, "Ошибка обновления сотрудника");
+            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdateEmployeeUri(), employee), 
+                 Logger,
+                $"Успешно обновлен сотрудник {employee.Id} {employee.Surname}",
+                "Ошибка обновления сотрудника");
 
         public async Task<bool> DeleteEmployeeAsync(int id) =>
-            await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeleteEmployeeUri(id)), Logger, $"Ошибка удаления сотрудника с id {id}");
+            await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeleteEmployeeUri(id)), 
+                Logger,
+                $"Успешно удален сотрудник c id : {id} ", 
+                $"Ошибка удаления сотрудника с id : {id}");
 
     }
 }

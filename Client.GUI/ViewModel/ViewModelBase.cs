@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Windows;
 using ReactiveUI;
 using System.Windows.Controls;
 using Client.HTTP;
@@ -53,6 +54,14 @@ namespace Client.GUI.ViewModel
         protected static void ExecExit()
         {
             Application.Current.Shutdown();
+        }
+
+        protected void ForeachAddCollection<T>(ICollection<T> outCollection,IEnumerable<T> inCollection )
+        {
+            foreach (var item in inCollection)
+            {
+                outCollection.Add(item);
+            }
         }
     }
 }
