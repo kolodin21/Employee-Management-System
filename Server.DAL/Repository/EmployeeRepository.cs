@@ -11,15 +11,15 @@ public class EmployeeRepository
     public async Task<bool> AddEmployeeAsync(Employee employee)
     {
         var connection = new NpgsqlConnection(dbConfig.ConnectionString);
-        const string sql = "SELECT * FROM function_update_employee(@employee_id,@person_id,@name,@sur_name,@patronymic,@department_name,@position_name,@hire_date,@date_of_dismissal)";
+        const string sql = "SELECT * FROM function_add_employee(@name,@surname,@patronymic,@department_id,@position_id,@hire_date,@date_of_dismissal)";
         await using var command = new NpgsqlCommand(sql, connection);
-        //command.Parameters.AddWithValue("@employee_id", employee.EmployeeId);
+        command.Parameters.AddWithValue("@employee_id", employee.EmployeeId);
         command.Parameters.AddWithValue("@person_id", employee.PersonId);
         command.Parameters.AddWithValue("@name", employee.Name);
-        command.Parameters.AddWithValue("@sur_name", employee.Surname);
+        command.Parameters.AddWithValue("@surname", employee.Surname);
         command.Parameters.AddWithValue("@patronymic", employee.Patronymic);
-        command.Parameters.AddWithValue("@department_name", employee.Department);
-        command.Parameters.AddWithValue("@position_name", employee.Position);
+        command.Parameters.AddWithValue("@department", employee.DepartmentId);
+        command.Parameters.AddWithValue("@position", employee.PositionId);
         command.Parameters.AddWithValue("@hire_date", employee.HireDate);
         command.Parameters.AddWithValue("@date_of_dismissal", employee.DateOfDismissal);
         await connection.OpenAsync();
@@ -128,15 +128,14 @@ public class EmployeeRepository
     public async Task<bool> UpdateEmployeeAsync(Employee employee)
     {
         var connection = new NpgsqlConnection(dbConfig.ConnectionString);
-        const string sql = "SELECT * FROM function_update_employee(@employee_id,@person_id,@name,@sur_name,@patronymic,@department_name,@position_name,@hire_date,@date_of_dismissal)";
+        const string sql = "SELECT * FROM function_update_employee(@employee_id, @name,@sur_name,@patronymic,@department_id,@position_id,@hire_date,@date_of_dismissal)";
         await using var command = new NpgsqlCommand(sql, connection);
         command.Parameters.AddWithValue("@employee_id", employee.EmployeeId);
-        command.Parameters.AddWithValue("@person_id", employee.PersonId);
         command.Parameters.AddWithValue("@name", employee.Name);
         command.Parameters.AddWithValue("@sur_name", employee.Surname);
         command.Parameters.AddWithValue("@patronymic", employee.Patronymic);
-        command.Parameters.AddWithValue("@department_name", employee.Department);
-        command.Parameters.AddWithValue("@position_name", employee.Position);
+        command.Parameters.AddWithValue("@department_name", employee.DepartmentId);
+        command.Parameters.AddWithValue("@position_name", employee.PositionId);
         command.Parameters.AddWithValue("@hire_date", employee.HireDate);
         command.Parameters.AddWithValue("@date_of_dismissal", employee.DateOfDismissal);
         await connection.OpenAsync();
