@@ -55,35 +55,35 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             BackCommand = ReactiveCommand.Create(Back);
 
             //Todo : Переделать логику под вызовы из бд
-            DepartmentsList = new List<KeyValuePair<int, string>>
-            {
-                new(1, "IT"),
-                new(2, "Бухгалтерия"),
-                new(3, "Отдел кадров"),
-                new(4, "Продажи"),
-                new(5, "Финансы"),
-                new(6, "Маркетинг"),
-                new(7, "Логистика"),
-                new(8, "Юридический отдел"),
-                new(9, "Отдел безопасности")
-            };
-            PositionList = new List<KeyValuePair<int, string>>
-            {
-                new(1, "Разработчик"),
-                new(2, "Бухгалтер"),
-                new(3, "HR-менеджер"),
-                new(4, "Менеджер"),
-                new(5, "Аналитик"),
-                new(6, "Системный администратор"),
-                new(7, "Маркетолог"),
-                new(8, "Логист"),
-                new(9, "QA-инженер"),
-                new(10, "Аудитор"),
-                new(11, "Юрист"),
-                new(12, "Охранник"),
-                new(13, "Аналитик"),
-                new(14, "Бухгалтер"),
-            };
+            //DepartmentsList = new List<KeyValuePair<int, string>>
+            //{
+            //    new(1, "IT"),
+            //    new(2, "Бухгалтерия"),
+            //    new(3, "Отдел кадров"),
+            //    new(4, "Продажи"),
+            //    new(5, "Финансы"),
+            //    new(6, "Маркетинг"),
+            //    new(7, "Логистика"),
+            //    new(8, "Юридический отдел"),
+            //    new(9, "Отдел безопасности")
+            //};
+            //PositionList = new List<KeyValuePair<int, string>>
+            //{
+            //    new(1, "Разработчик"),
+            //    new(2, "Бухгалтер"),
+            //    new(3, "HR-менеджер"),
+            //    new(4, "Менеджер"),
+            //    new(5, "Аналитик"),
+            //    new(6, "Системный администратор"),
+            //    new(7, "Маркетолог"),
+            //    new(8, "Логист"),
+            //    new(9, "QA-инженер"),
+            //    new(10, "Аудитор"),
+            //    new(11, "Юрист"),
+            //    new(12, "Охранник"),
+            //    new(13, "Аналитик"),
+            //    new(14, "Бухгалтер"),
+            //};
 
             //Загрузка данных
             LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);

@@ -16,8 +16,8 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         [Reactive] public string Surname { get; set; } = "Александр";
         [Reactive] public string? Patronymic { get; set; } = "Владимирович";
         [Reactive] public DateTime HireDate { get; set; } = DateTime.Now;
-        public List<KeyValuePair<int, string>> DepartmentsList { get; set; }
-        public List<KeyValuePair<int, string>> PositionList { get; set; }
+        public List<KeyValuePair<int, string>> DepartmentsList { get; set; } = [];
+        public List<KeyValuePair<int, string>> PositionList { get; set; } = [];
         [Reactive] public KeyValuePair<int, string> SelectedDepartment { get; set; }
         [Reactive] public KeyValuePair<int, string> SelectedPosition { get; set; }
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
@@ -26,40 +26,10 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 
         public AddEmployeePageViewModel()
         {
-            DepartmentsList = new List<KeyValuePair<int, string>>
-            {
-                new(1, "IT"),
-                new(2, "Бухгалтерия"),
-                new(3, "Отдел кадров"),
-                new(4, "Продажи"),
-                new(5, "Финансы"),
-                new(6, "Маркетинг"),
-                new(7, "Логистика"),
-                new(8, "Юридический отдел"),
-                new(9, "Отдел безопасности")
-            };
-            PositionList = new List<KeyValuePair<int, string>>
-            {
-                new(1, "Разработчик"),
-                new(2, "Бухгалтер"),
-                new(3, "HR-менеджер"),
-                new(4, "Менеджер"),
-                new(5, "Аналитик"),
-                new(6, "Системный администратор"),
-                new(7, "Маркетолог"),
-                new(8, "Логист"),
-                new(9, "QA-инженер"),
-                new(10, "Аудитор"),
-                new(11, "Юрист"),
-                new(12, "Охранник"),
-                new(13, "Аналитик"),
-                new(14, "Бухгалтер"),
-            };
-
             SaveCommand = ReactiveCommand.CreateFromTask(Save,CanSave());
 
-            //LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
-            //LoadCommand.Execute().Subscribe();
+            LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
+            LoadCommand.Execute().Subscribe();
         }
        
 
@@ -138,12 +108,21 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 
             if (await ManagerHttp.EmployeeHttpClient.AddEmployeeAsync(employee))
             {
+                Reset();
                 MessageBox.Show("Сотруник успешно добавлен");
             }
             else
             {
                 MessageBox.Show("Ошибка добавления сотрудника");
             }
+        }
+        private void Reset()
+        {
+            Name = string.Empty;
+            Surname = string.Empty;
+            Patronymic = string.Empty;
+            SelectedDepartment = DepartmentsList.FirstOrDefault();
+            SelectedPosition = PositionList.FirstOrDefault();
         }
     }
 }

@@ -29,7 +29,22 @@ public class PositionRepository : BaseRepository
 
     public async Task<IEnumerable<Position>> GetPositionsAsync()
     {
-        return [];
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        const string sql = "SELECT * FROM table_positions";
+        await using var command = new NpgsqlCommand(sql, connection);
+        await connection.OpenAsync();
+        await using var reader = await command.ExecuteReaderAsync();
+        var positions = new List<Position>();
+        while (await reader.ReadAsync())
+        {
+            var position = new Position
+            {
+                Id = reader.GetInt32(0),
+                Name = reader.GetString(1),
+            };
+            positions.Add(position);
+        }
+        return positions;
     }
     
     public async Task<bool> UpdatePositionAsync(int id, string name)
