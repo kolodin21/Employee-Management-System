@@ -16,28 +16,16 @@ namespace Client.HTTP
 
 
         public async Task<bool> AddPositionAsync(Position position) =>
-            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddPositionUri(), position),
-                Logger,
-                $"Успешно добавлена позиция {position.Name}",
-                $"Ошибка добавления позиции {position.Name}");
+            await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddPositionUri(), position),Logger);
 
         public async Task<IEnumerable<Position>> GetPositionsAsync() =>
-            await HttpRequestResultAsync<Position>(async () => await Client.GetAsync(GetPositionsUri()),
-                Logger,
-                "Успешно получены позиции",
-                "Ошибка получения позиций");
+            await HttpRequestResultAsync<Position>(async () => await Client.GetAsync(GetPositionsUri()),Logger);
 
         public async Task<bool> UpdatePositionAsync(int id, string newName) =>
-            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdatePositionUri(id), new { Name = newName }),
-                Logger,
-                $"Успешно обновлена позиция с id {id} на {newName}",
-                $"Ошибка обновления позиции с id {id} на {newName}");
+            await HttpRequestBoolAsync(async () => await Client.PutAsJsonAsync(UpdatePositionUri(id), new { Name = newName }),Logger);
 
         public async Task<bool> DeletePositionAsync(int id) =>
-            await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeletePositionUri(id)),
-                Logger,
-                $"Успешно удалена позиция с id {id}",
-                $"Ошибка удаления позиции с id {id}");
+            await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeletePositionUri(id)),Logger);
 
     }
 }

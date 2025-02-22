@@ -24,7 +24,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         public ReactiveCommand<Unit, Unit> LoadCommand { get; }
 
 
-
         public AddEmployeePageViewModel()
         {
             DepartmentsList = new List<KeyValuePair<int, string>>
@@ -139,12 +138,10 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 
             if (await ManagerHttp.EmployeeHttpClient.AddEmployeeAsync(employee))
             {
-                Logger.Info($"Новый сотрудник {Name} {Surname} {Patronymic} успешно добавлен");
                 MessageBox.Show("Сотруник успешно добавлен");
             }
             else
             {
-                Logger.Warn($"Ошибка добавления сотрудника {Name} {Surname} {Patronymic}");
                 MessageBox.Show("Ошибка добавления сотрудника");
             }
         }

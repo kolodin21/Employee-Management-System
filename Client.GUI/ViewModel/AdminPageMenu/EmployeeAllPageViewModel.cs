@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using Models;
@@ -101,7 +99,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             {
                 if (await ManagerHttp.EmployeeHttpClient.DeleteEmployeeAsync(SelectedEmployee.Id))
                 {
-                    Logger.Info($"Сотрудник c {SelectedEmployee!.Id} уволен");
                     Employees.Remove(SelectedEmployee!);
                     MessageBox.Show("Сотрудник уволен");
 
@@ -112,7 +109,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 }
                 else
                 {
-                    Logger.Error($"Ошибка уволенения сотрудника с {SelectedEmployee!.Id}");
                     MessageBox.Show("Ошибка уволенения сотрудника");
                 }
             }
@@ -147,7 +143,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             //Todo: Обновить кэш
             if (await ManagerHttp.EmployeeHttpClient.UpdateEmployeeAsync(employee))
             {
-                Logger.Info($"Сотрудник с {employee.Id} обновлен");
                 MessageBox.Show("Сотрудник обновлен");
 
                 // Обновление данных в коллекции
@@ -168,7 +163,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             }
             else
             {
-                Logger.Error($"Ошибка обновления сотрудника с {employee.Id}");
                 MessageBox.Show("Ошибка обновления сотрудника");
             }
         }

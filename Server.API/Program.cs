@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Models;
 using NLog;
 using Server.BL;
+using System.Net;
 
 #region MyRegion
 
@@ -70,10 +72,34 @@ builder.Services.AddSingleton<ManagerService>();
 
 var app = builder.Build();
 
-// Глобальная обработка исключений
-app.UseExceptionHandler("/error");
-
 var logger = LogManager.GetCurrentClassLogger();
+
+// Глобальная обработка исключений
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+        if (exceptionHandlerPathFeature?.Error != null)
+        {
+            var errorMessage = new
+            {
+                Error = "Произошла ошибка",
+                Message = exceptionHandlerPathFeature.Error.Message
+            };
+
+            // Логирование ошибки
+            logger.Error(exceptionHandlerPathFeature.Error, "Ошибка при обработке запроса");
+
+            await context.Response.WriteAsJsonAsync(errorMessage);
+        }
+    });
+});
+
 
 async Task<IResult> HttpRequestAsync<T>(Func<Task<T>> managerService, string message)
 {
@@ -159,7 +185,7 @@ app.MapPut("/departments/{id:int}", async (int id, string newName, ManagerServic
 
 app.MapPost("/position/new", async (Position position, ManagerService managerService) =>
     await HttpRequestAsync(
-        () => managerService.PositionService.AddPositionAsync(position.Name),
+        () => managerService.PositionService.AddPositionAsync(position),
         "Error adding position")
 );
 

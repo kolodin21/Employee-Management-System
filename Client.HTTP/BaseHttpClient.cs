@@ -11,7 +11,7 @@ namespace Client.HTTP
         protected static string? Host { get; set; } = HttpConfig.Host;
 
 
-        public async Task<bool> HttpRequestBoolAsync(Func<Task<HttpResponseMessage>> clientRequest, Logger logger,string messageSuccess, string messageError)
+        public async Task<bool> HttpRequestBoolAsync(Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
             try
             {
@@ -19,24 +19,25 @@ namespace Client.HTTP
 
                 if (response.IsSuccessStatusCode)
                 {
-                    logger.Info(messageSuccess);
                     return true;
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
-                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}");
+                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return false;
 
             }
             catch (Exception ex)
             {
-                logger.Warn($"{messageError}: {ex.Message}");
-                return false;
+                logger.Warn($"{ex.Message}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                return false;   
             }
         }
 
         public async Task<IEnumerable<T>> HttpRequestResultAsync<T>(
-            Func<Task<HttpResponseMessage>> clientRequest, Logger logger, string messageSuccess, string messageError)
+            Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
             try
             {
@@ -44,29 +45,31 @@ namespace Client.HTTP
 
                 if (response.IsSuccessStatusCode)
                 {
-                    logger.Info(messageSuccess);
                     var result = await response.Content.ReadFromJsonAsync<IEnumerable<T>>();
                     return result ?? [];
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
-                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}");
+                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return [];
             }
             catch (JsonException jsonEx)
             {
-                logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}");
+                logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}" + 
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return [];
             }
             catch (Exception ex)
             {
-                logger.Warn($"{messageError}: {ex.Message}");
+                logger.Warn($"{ex.Message}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return [];
             }
         }
 
-        public async Task<T?> HttpRequestResultSingleAsync<T>(
-            Func<Task<HttpResponseMessage>> clientRequest, Logger logger, string messageSuccess, string messageError)
+        protected async Task<T?> HttpRequestResultSingleAsync<T>(
+            Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
             try
             {
@@ -74,26 +77,27 @@ namespace Client.HTTP
 
                 if (response.IsSuccessStatusCode)
                 {
-                    logger.Info(messageSuccess);
                     return await response.Content.ReadFromJsonAsync<T>();
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
-                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}");
+                logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return default;
 
             }
             catch (JsonException jsonEx)
             {
-                logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}");
+                logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}" +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return default;
             }
             catch (Exception ex)
             {
-                logger.Warn($"{message}: {ex.Message}");
+                logger.Warn($"{ex.Message}. " +
+                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
                 return default;
             }
         }
-
     }
 }

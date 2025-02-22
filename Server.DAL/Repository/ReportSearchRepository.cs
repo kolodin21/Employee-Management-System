@@ -15,12 +15,12 @@ public class ReportSearchRepository
         return null;
     }
     
-    public async Task<EmployeeDto> GenerateLeaveStatisticsAsync(DateTime start, DateTime end)
+    public async Task<IEnumerable<Report>> GenerateLeaveStatisticsAsync(DateTime start, DateTime end)
     {
         return null;
     }
 
-    public async Task<EmployeeDto> SearchEmployeesAsync(string lastName, string firstName)
+    public async Task<IEnumerable<EmployeeDto>> SearchEmployeesAsync(string lastName, string firstName)
     {
         return null;
     }
