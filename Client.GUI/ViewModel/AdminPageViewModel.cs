@@ -33,6 +33,7 @@ namespace Client.GUI.ViewModel
 
             AllEmployeeCommand = ReactiveCommand.Create(() =>
             {
+                Logger.Info("Вызов EmployeeAllPageView");
                 CurrentContentAdminPage = GetPage<EmployeeAllPageView>();
                 Reset();
                 IsLoadEmployeeCommand = true;

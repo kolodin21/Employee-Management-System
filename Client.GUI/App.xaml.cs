@@ -39,50 +39,50 @@ namespace Client.GUI
             services.AddSingleton<LeaveHttpClient>();
             services.AddSingleton<ManagerHttp>();
 
-            services.AddViewWithViewModel<MainMenuPageView,MainMenuPageViewModel>();
-            services.AddViewWithViewModel<AuthorizationPageView, AuthorizationPageViewModel>();
-            services.AddViewWithViewModel<AdminPageView, AdminPageViewModel>();
+            services.AddSingleton<MainMenuPageView>();
+            services.AddSingleton<AuthorizationPageView>();
+            services.AddSingleton<AdminPageView>();
 
-
-            services.AddViewWithViewModelTransient<EmployeeAllPageView, EmployeeAllPageViewModel>();
-            services.AddViewWithViewModelTransient<AddEmployeePageView, AddEmployeePageViewModel>();
+            services.AddTransient<EmployeeAllPageView>();
+            services.AddTransient<AddEmployeePageView>();
         }
-
     }
-
-
     //Метод расширения для IServiceCollection для одновременного создадания View и ViewModel с привязкой DataContext
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddViewWithViewModel<TView, TViewModel>(this IServiceCollection services)
-            where TView : FrameworkElement, new()
-            where TViewModel : class
-        {
-            services.AddSingleton<TViewModel>();
-            services.AddSingleton<TView>(provider =>
-            {
-                var view = new TView
-                {
-                    DataContext = provider.GetRequiredService<TViewModel>()
-                };
-                return view;
-            });
-            return services;
-        }
-        public static IServiceCollection AddViewWithViewModelTransient<TView, TViewModel>(this IServiceCollection services)
-            where TView : FrameworkElement, new()
-            where TViewModel : class
-        {
-            services.AddTransient<TViewModel>();
-            services.AddTransient<TView>(provider =>
-            {
-                var view = new TView
-                {
-                    DataContext = provider.GetRequiredService<TViewModel>()
-                };
-                return view;
-            });
-            return services;
-        }
-    }
+    //public static class ServiceCollectionExtensions
+    //{
+    //    public static IServiceCollection AddViewWithViewModel<TView, TViewModel>(this IServiceCollection services)
+    //        where TView : FrameworkElement
+    //        where TViewModel : class
+    //    {
+    //        services.AddSingleton<TViewModel>(); // Гарантируем, что ViewModel создаётся один раз
+    //        services.AddSingleton<TView>(provider =>
+    //        {
+    //            var viewModel = provider.GetRequiredService<TViewModel>(); // Получаем уже созданную ViewModel
+    //            var view = Activator.CreateInstance(typeof(TView)) as TView; // Создаём View через фабрику
+    //            if (view != null)
+    //            {
+    //                view.DataContext = viewModel; // Устанавливаем DataContext
+    //            }
+    //            return view;
+    //        });
+
+    //        return services;
+    //    }
+
+    //    public static IServiceCollection AddViewWithViewModelTransient<TView, TViewModel>(this IServiceCollection services)
+    //        where TView : FrameworkElement, new()
+    //        where TViewModel : class
+    //    {
+    //        services.AddTransient<TViewModel>();
+    //        services.AddTransient<TView>(provider =>
+    //        {
+    //            var view = new TView
+    //            {
+    //                DataContext = provider.GetRequiredService<TViewModel>()
+    //            };
+    //            return view;
+    //        });
+    //        return services;
+    //    }
+    //}
 }

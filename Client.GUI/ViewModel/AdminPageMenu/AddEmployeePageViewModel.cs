@@ -58,8 +58,8 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 
             SaveCommand = ReactiveCommand.CreateFromTask(Save,CanSave());
 
-            LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
-            LoadCommand.Execute().Subscribe();
+            //LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
+            //LoadCommand.Execute().Subscribe();
         }
        
 

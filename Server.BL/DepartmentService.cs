@@ -26,7 +26,8 @@ namespace Server.BL
                 () => RepositoryManager.DepartmentRepository.GetAllDepartmentsAsync(),
                 Logger,
                 "Успешно получены департаменты",
-                "Ошибка получения департаментов");
+                "Ошибка получения департаментов",
+                CacheKey.AllDepartments);
 
         //Todo добавить для поиска по id 
 

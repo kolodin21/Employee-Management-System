@@ -62,6 +62,7 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMemoryCache();
 // Регистрируем сервисы в builder.Services
 builder.Services.AddSingleton<DepartmentService>();
 builder.Services.AddSingleton<EmployeeService>();
@@ -271,6 +272,5 @@ app.MapGet("/reports/search", async (string lastName, string firstName, ManagerS
 #endregion
 
 
-app.Run();
-
 logger.Info("Сервер запущен");
+app.Run();

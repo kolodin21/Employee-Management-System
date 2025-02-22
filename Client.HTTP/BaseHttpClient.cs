@@ -13,6 +13,7 @@ namespace Client.HTTP
 
         public async Task<bool> HttpRequestBoolAsync(Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
+            var nameMethod = new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name;
             try
             {
                 var response = await clientRequest();
@@ -24,14 +25,14 @@ namespace Client.HTTP
 
                 var errorContent = await response.Content.ReadAsStringAsync();
                 logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return false;
 
             }
             catch (Exception ex)
             {
                 logger.Warn($"{ex.Message}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return false;   
             }
         }
@@ -39,8 +40,10 @@ namespace Client.HTTP
         public async Task<IEnumerable<T>> HttpRequestResultAsync<T>(
             Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
+            var nameMethod = new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name;
             try
             {
+
                 var response = await clientRequest();
 
                 if (response.IsSuccessStatusCode)
@@ -51,19 +54,19 @@ namespace Client.HTTP
 
                 var errorContent = await response.Content.ReadAsStringAsync();
                 logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return [];
             }
             catch (JsonException jsonEx)
             {
                 logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}" + 
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return [];
             }
             catch (Exception ex)
             {
                 logger.Warn($"{ex.Message}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return [];
             }
         }
@@ -71,6 +74,7 @@ namespace Client.HTTP
         protected async Task<T?> HttpRequestResultSingleAsync<T>(
             Func<Task<HttpResponseMessage>> clientRequest, Logger logger)
         {
+            var nameMethod = new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name;
             try
             {
                 var response = await clientRequest();
@@ -82,20 +86,20 @@ namespace Client.HTTP
 
                 var errorContent = await response.Content.ReadAsStringAsync();
                 logger.Warn($"Неуспешный статус ответа: {response.StatusCode}. Ответ: {errorContent}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return default;
 
             }
             catch (JsonException jsonEx)
             {
                 logger.Warn($"Ошибка десериализации JSON: {jsonEx.Message}" +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return default;
             }
             catch (Exception ex)
             {
                 logger.Warn($"{ex.Message}. " +
-                            $"Вызвано из метода: {new System.Diagnostics.StackTrace().GetFrame(1)?.GetMethod()?.Name}");
+                            $"Вызвано из метода: {nameMethod}");
                 return default;
             }
         }

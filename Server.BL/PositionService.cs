@@ -19,7 +19,8 @@ namespace Server.BL
                 () => RepositoryManager.PositionRepository.GetPositionsAsync(),
                 Logger,
                 "Успешно получены должности",
-                "Ошибка получения должностей");
+                "Ошибка получения должностей",
+                CacheKey.AllPositions);
 
         public async Task<bool> UpdatePositionAsync(int id, string newName) =>
             await ExecuteWithLoggingAsync(

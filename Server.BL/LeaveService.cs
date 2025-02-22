@@ -26,7 +26,8 @@ namespace Server.BL
                 () => RepositoryManager.LeaveRepository.GetLeavesByEmployeeAsync(employeeId),
                 Logger,
                 $"Успешно получены отпуска для сотрудника с id {employeeId}",
-                $"Ошибка получения отпусков сотрудника c id {employeeId}");
+                $"Ошибка получения отпусков сотрудника c id {employeeId}",
+                CacheKey.LeavesByEmployee(employeeId));
 
         public async Task<IEnumerable<LeaveDto>> GetLeavesByDateRangeAsync(DateTime start, DateTime end) =>
             await ExecuteWithLoggingAsync(

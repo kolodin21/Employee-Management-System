@@ -8,19 +8,23 @@ namespace Server.BL
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public async Task<bool> AddEmployeeAsync(Employee employee) =>
-            await ExecuteWithLoggingAsync(
+        public async Task<bool> AddEmployeeAsync(Employee employee)
+        {
+            ClearCache(CacheKey.AllEmployees,Logger);
+            return await ExecuteWithLoggingAsync(
                 () => RepositoryManager.EmployeeRepository.AddEmployeeAsync(employee),
                 Logger,
                 $"Успешно добавлен сотрудник {employee.Surname} {employee.Name}",
                 "Ошибка добавления сотрудника");
+        }
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync() =>
             await ExecuteWithLoggingAsync(
                 () => RepositoryManager.EmployeeRepository.GetEmployeesAsync(),
                 Logger,
                 "Успешно получены сотрудники",
-                "Ошибка получения сотрудников");
+                "Ошибка получения сотрудников",
+                CacheKey.AllEmployees);
 
         public async Task<EmployeeDto> GetEmployeeByIdAsync(int id) =>
             await ExecuteWithLoggingAsync(

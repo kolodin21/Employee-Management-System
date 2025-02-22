@@ -1,8 +1,12 @@
-﻿using NLog;
+﻿using System.Windows;
+using NLog;
 using ReactiveUI.Fody.Helpers;
 using System.Windows.Controls;
 using Client.GUI.View;
 using Client.GUI.ViewModel.LogInSystem;
+using Client.GUI.View.AdminPageMenu;
+using Client.GUI.View.LogInSystem;
+using Client.GUI.ViewModel.AdminPageMenu;
 
 namespace Client.GUI.ViewModel
 {
@@ -28,20 +32,29 @@ namespace Client.GUI.ViewModel
             Title = NamePage.MainMenu;
             CurrentContent = GetPage<MainMenuPageView>();
 
-            InitializeAndSubscribeToContentChanges<MainMenuPageViewModel>();
-            InitializeAndSubscribeToContentChanges<AuthorizationPageViewModel>();
-            InitializeAndSubscribeToContentChanges<AdminPageViewModel>();
+            InitializeAndSubscribeToContentChanges<MainMenuPageView,MainMenuPageViewModel>();
+            InitializeAndSubscribeToContentChanges<AuthorizationPageView, AuthorizationPageViewModel>();
+            InitializeAndSubscribeToContentChanges<AdminPageView, AdminPageViewModel>();
 
         }
-        private void InitializeAndSubscribeToContentChanges<TViewModel>()
+
+        private void InitializeAndSubscribeToContentChanges<TView, TViewModel>()
+            where TView : FrameworkElement
             where TViewModel : class
         {
-            var viewModel = GetPage<TViewModel>();
-            SubscribeToContentChanged(viewModel, (newContent, newTitle) =>
+            var view = GetPage<TView>(); // Получаем View
+            if (view.DataContext is TViewModel viewModel) // Проверяем, что DataContext нужного типа
             {
-                CurrentContent = newContent;
-                Title = newTitle;
-            });
+                SubscribeToContentChanged(viewModel, (newContent, newTitle) =>
+                {
+                    CurrentContent = newContent;
+                    Title = newTitle;
+                });
+            }
+            else
+            {
+                throw new InvalidOperationException($"DataContext в {typeof(TView)} не является {typeof(TViewModel)}");
+            }
         }
 
     }

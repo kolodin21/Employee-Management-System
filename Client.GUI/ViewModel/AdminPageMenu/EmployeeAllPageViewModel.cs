@@ -168,12 +168,13 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         }
         private async Task LoadDateBase()
         {
+            Logger.Info("Начало выполнения LoadDateBase");
             try
             {
                 // Запускаем запросы одновременно
-                var employeesTask = ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
-                var departmentsTask = ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
-                var positionsTask = ManagerHttp.PositionHttpClient.GetPositionsAsync();
+                var employeesTask =  ManagerHttp.EmployeeHttpClient.GetEmployeesAsync();
+                var departmentsTask =  ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
+                var positionsTask =  ManagerHttp.PositionHttpClient.GetPositionsAsync();
 
                 // Дожидаемся завершения всех запросов
                 await Task.WhenAll(employeesTask, departmentsTask, positionsTask);
@@ -190,7 +191,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                     ForeachAddCollection(Employees, employees);
                     PositionList = positions.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
                     DepartmentsList = departments.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
-
                 }
                 else
                 {
@@ -201,7 +201,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             catch (Exception ex)
             {
                 Logger.Error($"Ошибка загрузки данных: {ex}");
-                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
