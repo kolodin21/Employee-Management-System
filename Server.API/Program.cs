@@ -150,10 +150,10 @@ app.MapPut("/employees", async (ManagerService managerService, Employee emp) =>
         "Error updating employee"));
 
 
-//app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id) =>
-// await HttpRequestAsync(
-//     () => managerService.EmployeeService.DeleteEmployeeAsync(id),
-//     $"Error deleting employee with id {id}"));
+app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id) =>
+ await HttpRequestAsync(
+     () => managerService.EmployeeService.DeleteEmployeeAsync(id),
+     $"Error deleting employee with id {id}"));
 
 #endregion
 

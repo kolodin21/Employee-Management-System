@@ -47,12 +47,12 @@ namespace Server.BL
                 $"Успешно обновлен сотрудник {employee.Id} {employee.Surname}",
                 "Ошибка обновления сотрудника");
 
-        //public async Task<bool> DeleteEmployeeAsync(int id) =>
-        //    await ExecuteWithLoggingAsync(
-        //        () => RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(id),
-        //        Logger,
-        //        $"Успешно уволен сотрудник с id : {id}",
-        //        $"Ошибка увольнения сотрудника с id : {id}");
+        public async Task<bool> DeleteEmployeeAsync(int id) =>
+            await ExecuteWithLoggingAsync(
+                () => RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(id),
+                Logger,
+                $"Успешно уволен сотрудник с id : {id}",
+                $"Ошибка увольнения сотрудника с id : {id}");
     }
 }
 

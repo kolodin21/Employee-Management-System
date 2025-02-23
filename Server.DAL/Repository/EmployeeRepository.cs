@@ -153,4 +153,25 @@ public class EmployeeRepository : BaseRepository
         return result;
     }
 
+    public async Task<bool> DeleteEmployeeAsync(int id)
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        const string sql = "DELETE FROM table_employees WHERE id = @id";
+        await using var command = new NpgsqlCommand(sql, connection);
+
+        command.Parameters.AddWithValue("@id", id);
+
+        await connection.OpenAsync();
+
+        var reader = await command.ExecuteReaderAsync();
+        var result = false;
+
+        while (await reader.ReadAsync())
+        {
+            result = reader.GetFieldValue<bool>(0);
+        }
+
+        return result;
+    }
+
 }

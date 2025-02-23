@@ -2,27 +2,17 @@
 
 namespace Server.BL
 {
-    public class ManagerService
+    public class ManagerService(
+        DepartmentService departmentService,
+        EmployeeService employeeService,
+        LeaveService leaveService,
+        PositionService positionService,
+        ReportSearchService reportSearchService)
     {
-        public DepartmentService DepartmentService { get; }
-        public EmployeeService EmployeeService { get; }
-        public LeaveService LeaveService { get; }
-        public PositionService PositionService { get; }
-        public ReportSearchService ReportSearchService { get; }
-
-        public ManagerService(
-            DepartmentService departmentService,
-            EmployeeService employeeService,
-            LeaveService leaveService,
-            PositionService positionService,
-            ReportSearchService reportSearchService)
-        {
-            DepartmentService = departmentService;
-            EmployeeService = employeeService;
-            LeaveService = leaveService;
-            PositionService = positionService;
-            ReportSearchService = reportSearchService;
-        }
-
+        public DepartmentService DepartmentService { get; } = departmentService;
+        public EmployeeService EmployeeService { get; } = employeeService;
+        public LeaveService LeaveService { get; } = leaveService;
+        public PositionService PositionService { get; } = positionService;
+        public ReportSearchService ReportSearchService { get; } = reportSearchService;
     }
 }
