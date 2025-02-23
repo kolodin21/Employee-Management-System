@@ -1,4 +1,5 @@
 ﻿using Models;
+using Npgsql;
 using Server.DAL.Configuration;
 
 namespace Server.DAL.Repository;
@@ -10,6 +11,8 @@ public class EmployeeRepository : BaseRepository
         await using var connection = new NpgsqlConnection(dbConfig.ConnectionString);
         const string sql = "SELECT function_add_employee(@name,@surname,@patronymic,@department_id,@position_id,@hire_date)";
         await using var command = new NpgsqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@employee_id", employee.EmployeeId);
+        command.Parameters.AddWithValue("@person_id", employee.PersonId);
         command.Parameters.AddWithValue("@name", employee.Name);
         command.Parameters.AddWithValue("@surname", employee.Surname);
         command.Parameters.AddWithValue("@patronymic", employee.Patronymic);
