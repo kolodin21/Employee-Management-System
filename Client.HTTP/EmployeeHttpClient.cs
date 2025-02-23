@@ -15,6 +15,7 @@ namespace Client.HTTP
         public static Uri GetEmployeeByIdUri(int id) => new Uri($"{Host}/employee/{id}");
         public static Uri GetEmployeesByDepartmentUri(int id) => new Uri($"{Host}/department/{id}/employees");
         public static Uri UpdateEmployeeUri() => new Uri($"{Host}/employees");
+        public static Uri DismissEmployeeUri(int id,DateTime dateDismiss) => new Uri($"{Host}/employee/dismiss/{id}?time={dateDismiss:O}");
 
         public async Task<bool> AddEmployeeAsync(Employee employee) =>
             await HttpRequestBoolAsync(async () => await Client.PostAsJsonAsync(AddEmployeeUri(), employee), Logger);
@@ -33,6 +34,9 @@ namespace Client.HTTP
 
         public async Task<bool> DeleteEmployeeAsync(int id) =>
             await HttpRequestBoolAsync(async () => await Client.DeleteAsync(DeleteEmployeeUri(id)), Logger);
+
+        public async Task<bool> DismissEmployeeAsync(int id, DateTime dateDismiss) =>
+            await HttpRequestBoolAsync(async () => await Client.PutAsync(DismissEmployeeUri(id,dateDismiss),null), Logger);
 
     }
 }

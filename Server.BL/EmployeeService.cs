@@ -26,7 +26,7 @@ namespace Server.BL
                 "Ошибка получения сотрудников",
                 CacheKey.AllEmployees);
 
-        public async Task<EmployeeDto> GetEmployeeByIdAsync(int id) =>
+        public async Task<EmployeeDto?> GetEmployeeByIdAsync(int id) =>
             await ExecuteWithLoggingAsync(
                 () => RepositoryManager.EmployeeRepository.GetEmployeeByIdAsync(id),
                 Logger,
@@ -40,7 +40,7 @@ namespace Server.BL
                 $"Сотрудники департамента с id : {departmentId} найдены",
                 $"Ошибка получения сотрудников департамента с id {departmentId}");
 
-        public async Task<bool> UpdateEmployeeAsync(Employee employee) =>
+        public async Task<bool> UpdateEmployeeAsync(EmployeeDto employee) =>
             await ExecuteWithLoggingAsync(
                 () => RepositoryManager.EmployeeRepository.UpdateEmployeeAsync(employee),
                 Logger,
@@ -50,6 +50,13 @@ namespace Server.BL
         public async Task<bool> DeleteEmployeeAsync(int id) =>
             await ExecuteWithLoggingAsync(
                 () => RepositoryManager.EmployeeRepository.DeleteEmployeeAsync(id),
+                Logger,
+                $"Сотрудник успешно удален из базы данных с id : {id}",
+                $"Ошибка удаления из базы данных сотрудника с id : {id}");
+
+        public async Task<bool> DismissEmployeeAsync(int id,DateTime dateDismiss) =>
+            await ExecuteWithLoggingAsync(
+                () => RepositoryManager.EmployeeRepository.DismissEmployeeAsync(id,dateDismiss),
                 Logger,
                 $"Успешно уволен сотрудник с id : {id}",
                 $"Ошибка увольнения сотрудника с id : {id}");

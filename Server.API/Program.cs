@@ -144,10 +144,16 @@ app.MapGet("/department/{id:int}/employees", async (ManagerService managerServic
      $"Error getting employees by department with id {id}"));
 
 
-app.MapPut("/employees", async (ManagerService managerService, Employee emp) =>
+app.MapPut("/employees", async (ManagerService managerService, EmployeeDto emp) =>
     await HttpRequestAsync(
         () => managerService.EmployeeService.UpdateEmployeeAsync(emp),
         "Error updating employee"));
+
+
+app.MapPut("/employee/dismiss/{id:int}", async (ManagerService managerService,int id,DateTime time) =>
+    await HttpRequestAsync(
+        () => managerService.EmployeeService.DismissEmployeeAsync(id, time),
+        $"Error dismissing employee with id {id}"));
 
 
 app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id) =>
@@ -158,7 +164,6 @@ app.MapDelete("/employee/{id:int}", async (ManagerService managerService, int id
 #endregion
 
 #region DepartmentService
-//app.MapGet("/departments", async () => await departmentService.GetDepartmentsAsync());
 //Todo Добавить реализацию метода GetDepartmentsAsync
 app.MapGet("/departments", async (ManagerService managerService) =>
     await HttpRequestAsync(
