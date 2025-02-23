@@ -1,0 +1,521 @@
+CREATE SCHEMA test;
+
+CREATE TABLE table_persons(
+  id SERIAL NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  sur_name TEXT NOT NULL,
+  patronymic TEXT
+);
+
+CREATE TABLE table_positions(
+    id SERIAL NOT NULL PRIMARY KEY,
+    position_name TEXT NOT NULL
+);
+
+CREATE TABLE table_departments(
+    id SERIAL NOT NULL PRIMARY KEY,
+    department_name TEXT NOT NULL
+);
+
+CREATE TYPE leave_types_enum AS ENUM ('vacation','medical','dismissed');
+
+CREATE TABLE table_leaves(
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    leave_type leave_types_enum NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE
+);
+
+CREATE TABLE table_employees(
+    id SERIAL NOT NULL PRIMARY KEY,
+    person_id INT NOT NULL,
+    department_id INT NOT NULL,
+    position_id INT NOT NULL,
+    hire_date DATE NOT NULL,
+    date_of_dismissal DATE,
+    FOREIGN KEY (person_id) REFERENCES table_persons(id),
+    FOREIGN KEY (department_id) REFERENCES table_departments(id),
+    FOREIGN KEY (position_id) REFERENCES table_positions(id)
+);
+
+CREATE TABLE table_employees_leave(
+    id SERIAL NOT NULL PRIMARY KEY,
+    employee_id INT NOT NULL,
+    leave_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES table_employees(id),
+    FOREIGN KEY (leave_id) REFERENCES table_leaves(id)
+);
+
+CREATE OR REPLACE VIEW view_employees AS
+SELECT table_employees.id AS id,
+       table_persons.id AS person_id,
+       table_persons.name AS name,
+       table_persons.sur_name AS sur_name,
+       table_persons.patronymic AS patronymic,
+       table_departments.id AS department_id,
+       table_departments.department_name AS department_name,
+       table_positions.id AS position_id,
+       table_positions.position_name AS position_name,
+       table_employees.hire_date AS hire_date,
+       table_employees.date_of_dismissal AS dismissal_date
+FROM table_employees
+JOIN table_persons ON table_employees.person_id = table_persons.id
+JOIN table_departments ON table_employees.department_id = table_departments.id
+JOIN table_positions ON table_employees.position_id = table_positions.id;
+
+CREATE OR REPLACE VIEW view_employees_leave AS
+SELECT table_persons.id AS person_id,
+       table_persons.name AS name,
+       table_persons.sur_name AS sur_name,
+       table_persons.patronymic AS patronymic,
+       table_departments.id AS department_id,
+       table_departments.department_name AS department_name,
+       table_positions.id AS position_id,
+       table_positions.position_name AS position_name,
+       table_leaves.leave_type AS leave_type,
+       table_leaves.start_date as begin_date,
+       table_leaves.end_date AS end_date
+FROM table_employees_leave
+JOIN table_leaves ON table_employees_leave.leave_id = table_leaves.id
+JOIN table_employees ON table_employees_leave.employee_id = table_employees.id
+JOIN table_persons ON table_employees.person_id = table_persons.id
+JOIN table_departments ON table_employees.department_id = table_departments.id
+JOIN table_positions ON table_employees.position_id = table_positions.id;
+
+
+CREATE OR REPLACE FUNCTION function_if_exists_person_by_id(
+    IN person_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_persons
+            WHERE id = person_id;
+
+        IF (count > 0) THEN
+        RETURN TRUE;
+        ELSE RETURN FALSE;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_if_exists_person_by_fio(
+    IN person_name TEXT,
+       person_sur_name TEXT,
+       person_patronymic TEXT)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_persons
+            WHERE table_persons.name = person_name
+              AND table_persons.sur_name = person_sur_name
+              AND table_persons.patronymic = person_patronymic;
+
+        IF (count > 0) THEN
+
+            RETURN TRUE;
+
+        ELSE
+
+            RETURN FALSE;
+
+        END IF;
+
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION function_if_exists_department_by_id(
+    IN department_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_departments
+            WHERE id = department_id;
+
+        IF (count > 0) THEN
+        RETURN TRUE;
+        ELSE RETURN FALSE;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_if_exists_department_by_name(
+    IN name TEXT)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_departments
+            WHERE table_departments.department_name = name;
+
+        IF (count > 0) THEN
+
+            RETURN TRUE;
+
+        ELSE
+
+            RETURN FALSE;
+
+        END IF;
+
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION function_if_exists_position_by_id(
+    IN position_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_positions
+            WHERE id = position_id;
+
+        IF (count > 0) THEN
+        RETURN TRUE;
+        ELSE RETURN FALSE;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_if_exists_position_by_name(
+    IN name TEXT)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_positions
+            WHERE table_positions.position_name = name;
+
+        IF (count > 0) THEN
+
+            RETURN TRUE;
+
+        ELSE
+
+            RETURN FALSE;
+
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_if_exists_employee_by_id(
+    IN employee_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+    BEGIN
+
+        SELECT count(*) INTO count FROM table_employees
+            WHERE id = employee_id;
+
+        IF (count > 0) THEN
+        RETURN TRUE;
+        ELSE RETURN FALSE;
+        END IF;
+
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION function_add_person(
+    IN person_name TEXT,
+       person_sur_name TEXT,
+       person_patronymic TEXT)
+RETURNS INTEGER
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+        person_id INTEGER;
+        if_exists BOOLEAN;
+    BEGIN
+
+        if_exists := function_if_exists_person_by_fio(person_name, person_sur_name, person_patronymic);
+
+        IF (if_exists) THEN
+            SELECT id INTO person_id FROM table_persons WHERE
+                  table_persons.name = person_name
+              AND table_persons.sur_name = person_sur_name
+              AND table_persons.patronymic = person_patronymic;
+            RETURN person_id;
+        ELSE
+            INSERT INTO table_persons (name, sur_name, patronymic) VALUES (person_name, person_sur_name, person_patronymic);
+            SELECT id INTO person_id FROM table_persons WHERE
+                  table_persons.name = person_name
+              AND table_persons.sur_name = person_sur_name
+              AND table_persons.patronymic = person_patronymic;
+            RETURN person_id;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_add_department(
+    IN name TEXT)
+RETURNS INTEGER
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+        department_id INTEGER;
+        if_exists BOOLEAN;
+    BEGIN
+
+        if_exists := function_if_exists_department_by_name(name);
+
+        IF (if_exists) THEN
+            SELECT id INTO department_id FROM table_departments WHERE
+                  table_departments.department_name = name;
+            RETURN department_id;
+        ELSE
+            INSERT INTO table_departments (department_name) VALUES (name);
+            SELECT id INTO department_id FROM table_departments WHERE
+                 table_departments.department_name = name;
+            RETURN department_id;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_add_position(
+    IN name TEXT)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+        position_id INTEGER;
+        if_exists BOOLEAN;
+    BEGIN
+
+        if_exists := function_if_exists_position_by_name(name);
+
+        IF (if_exists) THEN
+            RETURN FALSE;
+        ELSE
+            INSERT INTO table_positions (position_name) VALUES (name);
+            SELECT id INTO position_id FROM table_positions WHERE
+                 table_positions.position_name = name;
+            RETURN TRUE;
+        END IF;
+
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_add_leave(
+    IN type leave_types_enum,
+    begin_date DATE,
+    finish_date DATE
+)
+RETURNS INTEGER
+language plpgsql
+as
+$$
+    DECLARE
+        leave_id INTEGER;
+    BEGIN
+
+        INSERT INTO table_leaves (leave_type, start_date, end_date) VALUES (type, begin_date, end_date);
+
+        SELECT id INTO leave_id FROM table_leaves WHERE
+                                table_leaves.leave_type = type AND
+                                table_leaves.start_date = begin_date AND
+                                table_leaves.end_date = finish_date;
+
+        RETURN leave_id;
+
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION function_update_employee(
+    IN employee_id INTEGER,
+    person_name TEXT, person_sur_name TEXT,
+    person_patronymic TEXT,
+    dep_id INTEGER,
+    pos_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        count INTEGER;
+        if_exist_employee BOOLEAN;
+        if_exist_person BOOLEAN;
+        pers_id INTEGER;
+    BEGIN
+
+        if_exist_employee := function_if_exists_employee_by_id(employee_id);
+        if_exist_person := function_if_exists_person_by_fio(person_name, person_sur_name, person_patronymic);
+
+        IF (if_exist_employee = FALSE OR if_exist_person = FALSE) THEN
+            RETURN FALSE;
+        END IF;
+
+        IF (if_exist_person) THEN
+            pers_id := function_add_person(person_name, person_sur_name, person_patronymic);
+            UPDATE table_persons SET
+                                     name = person_name, sur_name = person_sur_name, patronymic = person_patronymic
+            WHERE id = pers_id;
+        END IF;
+
+        UPDATE table_employees SET department_id = dep_id,
+                                   position_id = pos_id
+                                   WHERE id = employee_id;
+
+        RETURN TRUE;
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_add_employee(
+    IN person_name TEXT, person_sur_name TEXT,
+    person_patronymic TEXT,
+    dep_id INTEGER,
+    pos_id INTEGER,
+    h_date DATE)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        if_exist_person BOOLEAN;
+        pers_id INTEGER;
+    BEGIN
+
+        if_exist_person := function_if_exists_person_by_fio(person_name, person_sur_name, person_patronymic);
+        IF (if_exist_person = FALSE) THEN
+            pers_id := function_add_person(person_name, person_sur_name, person_patronymic);
+            INSERT INTO table_employees (person_id, department_id, position_id, hire_date, date_of_dismissal) VALUES
+                                        (pers_id, dep_id, pos_id, h_date::DATE, null);
+            RETURN TRUE;
+        END IF;
+        RETURN FALSE;
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_delete_employee(
+    IN employee_id INTEGER,
+        dismissal_date DATE)
+RETURNS BOOLEAN
+language plpgsql
+as
+$$
+    DECLARE
+        if_exist_employee BOOLEAN;
+    BEGIN
+
+        if_exist_employee := function_if_exists_employee_by_id(employee_id);
+        IF (if_exist_employee = TRUE) THEN
+            UPDATE table_employees SET date_of_dismissal = dismissal_date::DATE WHERE id = employee_id;
+            RETURN TRUE;
+        END IF;
+        RETURN FALSE;
+    END;
+$$;
+
+
+CREATE OR REPLACE FUNCTION function_update_department(
+    IN dep_id INTEGER, dep_name TEXT)
+RETURNS BOOLEAN
+language plpgsql
+AS $$
+    DECLARE
+    if_exist_department BOOLEAN;
+        BEGIN
+
+        if_exist_department := function_if_exists_department_by_id(dep_id);
+
+        IF (if_exist_department = FALSE) THEN
+            RETURN FALSE;
+        END IF;
+
+        UPDATE table_departments SET department_name = dep_name
+                                WHERE id = dep_id;
+
+        RETURN TRUE;
+
+        END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_update_position(
+    IN pos_id INTEGER, pos_name TEXT)
+RETURNS BOOLEAN
+language plpgsql
+AS $$
+    DECLARE
+    if_exist_position BOOLEAN;
+        BEGIN
+
+        if_exist_position := function_if_exists_position_by_id(pos_id);
+
+        IF (if_exist_position = FALSE) THEN
+            RETURN FALSE;
+        END IF;
+
+        UPDATE table_positions SET position_name = pos_name
+                                WHERE id = pos_id;
+
+        RETURN TRUE;
+
+        END;
+$$;
+
+CREATE OR REPLACE FUNCTION function_delete_position(
+    IN pos_id INTEGER)
+RETURNS BOOLEAN
+language plpgsql
+AS $$
+    DECLARE
+    if_exist_position BOOLEAN;
+        BEGIN
+
+        if_exist_position := function_if_exists_position_by_id(pos_id);
+
+        IF (if_exist_position = FALSE) THEN
+            RETURN FALSE;
+        END IF;
+
+        DELETE FROM table_positions WHERE id = pos_id;
+
+        RETURN TRUE;
+
+        END;
+$$;

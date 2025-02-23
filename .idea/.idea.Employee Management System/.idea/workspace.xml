@@ -10,7 +10,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac4d6fbb-7281-48e4-b670-dc7cf9c57c0e" name="Changes" comment="" />
+    <list default="true" id="ac4d6fbb-7281-48e4-b670-dc7cf9c57c0e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Server.DAL/Repository/BaseRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Employee Management System/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Employee Management System/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server.DAL/Repository/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server.DAL/Repository/EmployeeRepository.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,19 +41,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dal&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Project.Client.GUI">
     <configuration name="Client.GUI" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -125,6 +129,12 @@
       <updated>1739120452589</updated>
       <workItem from="1739120454061" duration="4070000" />
       <workItem from="1739289793020" duration="4664000" />
+      <workItem from="1739460630319" duration="7314000" />
+      <workItem from="1739634982550" duration="2892000" />
+      <workItem from="1739810536830" duration="221000" />
+      <workItem from="1739899699421" duration="1140000" />
+      <workItem from="1740072673562" duration="1217000" />
+      <workItem from="1740298830154" duration="431000" />
     </task>
     <task id="LOCAL-00001" summary="Добавил классы для работы с БД">
       <option name="closed" value="true" />
@@ -134,7 +144,47 @@
       <option name="project" value="LOCAL" />
       <updated>1739124545398</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="dal">
+      <option name="closed" value="true" />
+      <created>1739462817547</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1739462817547</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add Employee functions">
+      <option name="closed" value="true" />
+      <created>1739635172754</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1739635172754</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add functions DepartmentRepository.cs">
+      <option name="closed" value="true" />
+      <created>1739636673235</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1739636673235</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Вернул класс Emploee">
+      <option name="closed" value="true" />
+      <created>1739810661335</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1739810661335</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Исправил Employee и EmployeeRepository">
+      <option name="closed" value="true" />
+      <created>1740073814954</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740073814954</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +196,11 @@
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Добавил классы для работы с БД" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавил классы для работы с БД" />
+    <MESSAGE value="dal" />
+    <MESSAGE value="Add Employee functions" />
+    <MESSAGE value="Add functions DepartmentRepository.cs" />
+    <MESSAGE value="Вернул класс Emploee" />
+    <MESSAGE value="Исправил Employee и EmployeeRepository" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправил Employee и EmployeeRepository" />
   </component>
 </project>
