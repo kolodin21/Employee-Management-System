@@ -31,8 +31,11 @@
                     Style="{StaticResource ButtonSmallMenuStyle}"
                     Visibility="{Binding IsActiveButtonEdit,
                                  Converter={StaticResource BoolToVis}}"/>
+            <Button Content="Уволить сотрудника"
+                    Command="{Binding OpenDismiss}"
+                    Style="{StaticResource ButtonSmallMenuStyle}"/>
 
-            <Button Content="Увольнение"
+            <Button Content="Удалить данные из БД"
                 Command="{Binding DeleteEmployeeCommand}"
                 Style="{StaticResource ButtonSmallMenuStyle}"/>
 
@@ -41,6 +44,7 @@
                     Style="{StaticResource ButtonSmallMenuStyle}"
                     Visibility="{Binding IsOpenWindowEdit,
                         Converter={StaticResource BoolToVis}}"/>
+
 
         </StackPanel>
 

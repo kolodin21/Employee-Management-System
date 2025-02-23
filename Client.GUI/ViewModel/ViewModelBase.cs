@@ -63,5 +63,6 @@ namespace Client.GUI.ViewModel
                 outCollection.Add(item);
             }
         }
+
     }
 }

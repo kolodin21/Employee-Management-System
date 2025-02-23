@@ -3,8 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:component="clr-namespace:Client.GUI.Components"
              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}">
-    
-        <Grid Background="AntiqueWhite" >
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+
+
+<Grid Background="AntiqueWhite" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
@@ -41,12 +47,27 @@
 
             <component:DataPickerControl
                 Label="Дата устройства"
-                SelectedDate="{Binding HireDate}"/>
+                SelectedDate="{Binding HireDate}"
+                Visibility="{Binding IsActiveButtonEdit,
+                        Converter={StaticResource BoolToVis}}"/>
 
+            <component:DataPickerControl
+                Visibility="{Binding IsDismiss,
+                Converter={StaticResource BoolToVis}}"
+                Label="Дата увольнения"
+                SelectedDate="{Binding DateMissed}"/>
 
             <Button Content="Сохранить"
                     Command="{Binding SaveCommand}"
-                    Style="{StaticResource ButtonMenuStyle}"/>
+                    Style="{StaticResource ButtonMenuStyle}"
+                    Visibility="{Binding IsActiveButtonEdit,
+                            Converter={StaticResource BoolToVis}}"/>
+
+            <Button Content="Подтвердить"
+                    Command="{Binding DismissCommand}"
+                    Style="{StaticResource ButtonMenuStyle}"
+                    Visibility="{Binding IsDismiss,
+                            Converter={StaticResource BoolToVis}}"/>
 
         </StackPanel>
 

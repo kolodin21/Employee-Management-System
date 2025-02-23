@@ -31,7 +31,7 @@ public class EmployeeRepository : BaseRepository
         var employees = new List<EmployeeDto>();
 
         await using var connection = new NpgsqlConnection(ConnectionString);
-        const string sql = "SELECT * FROM view_employees";
+        const string sql = "SELECT * FROM view_employees WHERE dismissal_date is null";
 
         await connection.OpenAsync();
         await using var command = new NpgsqlCommand(sql, connection);
@@ -41,7 +41,8 @@ public class EmployeeRepository : BaseRepository
         {
             var employee = new EmployeeDto
             {
-                Id = reader.GetInt32(0),
+                EmployeeId = reader.GetInt32(0),
+                Id = reader.GetInt32(1),
                 Name = reader.GetString(2),
                 Surname = reader.GetString(3),
                 Patronymic = reader.GetString(4),
@@ -109,8 +110,8 @@ public class EmployeeRepository : BaseRepository
         {
             var employee = new EmployeeDto()
             {
-                Id = result.GetInt32(1),
                 EmployeeId = result.GetInt32(0),
+                Id = result.GetInt32(1),
                 Name = result.GetString(2),
                 Surname = result.GetString(3),
                 Patronymic = result.GetString(4),
@@ -130,7 +131,7 @@ public class EmployeeRepository : BaseRepository
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
 
-        const string sql = "SELECT function_update_employee(@employee_id, @name,@sur_name,@patronymic,@department_id,@position_id)";
+        const string sql = "SELECT function_update_employee(@employee_id, @name,@sur_name,@patronymic,@department_id,@position_id,@date_hire)";
 
         await using var command = new NpgsqlCommand(sql, connection);
 
@@ -140,6 +141,7 @@ public class EmployeeRepository : BaseRepository
         command.Parameters.AddWithValue("@patronymic", employee.Patronymic ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@department_id", employee.DepartmentId);
         command.Parameters.AddWithValue("@position_id", employee.PositionId);
+        command.Parameters.AddWithValue("@date_hire", employee.HireDate);
 
         await connection.OpenAsync();
 
@@ -171,7 +173,7 @@ public class EmployeeRepository : BaseRepository
 
         await connection.OpenAsync();
 
-        return (bool)(await command.ExecuteScalarAsync() ?? false);
+        return await command.ExecuteNonQueryAsync() > 0;
     }
 
 }
