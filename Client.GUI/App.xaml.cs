@@ -43,8 +43,8 @@ namespace Client.GUI
             services.AddSingleton<AuthorizationPageView>();
             services.AddSingleton<AdminPageView>();
 
-            services.AddTransient<EmployeeAllPageView>();
-            services.AddTransient<AddEmployeePageView>();
+            services.AddSingleton<EmployeeAllPageView>();
+            services.AddSingleton<AddEmployeePageView>();
         }
     }
     //Метод расширения для IServiceCollection для одновременного создадания View и ViewModel с привязкой DataContext

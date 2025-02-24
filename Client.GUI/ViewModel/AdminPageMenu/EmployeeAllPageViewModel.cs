@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
-using Client.GUI.Components;
 using Models;
 using NLog;
 using ReactiveUI;
@@ -12,7 +12,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 {
     public class EmployeeAllPageViewModel : ViewModelBase, IEmployeeForm
     {
-
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private EmployeeDto? OriginalEmployee { get; set; }
@@ -25,6 +24,7 @@ namespace Client.GUI.ViewModel.AdminPageMenu
 
         #region IEmployeeForm
 
+        [Reactive] public string FormTitle { get; set; }
         [Reactive] public string? Name { get; set; }
         [Reactive] public string? Surname { get; set; }
         [Reactive] public string? Patronymic { get; set; }
@@ -48,9 +48,8 @@ namespace Client.GUI.ViewModel.AdminPageMenu
         public ReactiveCommand<Unit, Unit> DeleteEmployeeCommand { get; }
         public ReactiveCommand<Unit, Unit> BackCommand { get; }
 
-
         //Команда загрузки данных
-        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+        //public ReactiveCommand<Unit, Unit> LoadCommand { get; }
 
         //Коллекция сотрудников
         public ObservableCollection<EmployeeDto> Employees { get; set; } = [];
@@ -66,8 +65,13 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             DismissCommand = ReactiveCommand.CreateFromTask(DismissEmployeeAsync, CanExecSelectedEmployee());
 
             //Загрузка данных
-            LoadCommand = ReactiveCommand.CreateFromTask(LoadDateBase);
-            LoadCommand.Execute().Subscribe();
+            Init();
+
+        }
+
+        private async void Init()
+        {
+            await LoadDateBase();
         }
 
         private async Task DismissEmployeeAsync()
@@ -91,8 +95,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 }
             }
         }
-
-
         private async Task DeleteEmployeeAsync()
         {
             var result = MessageBox.Show("Вы действительно хотите удалить данные сотрудника из БД?", "Предупреждение",
@@ -119,7 +121,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 Logger.Info("Удаление сотрудника отменено");
             }
         }
-
         private async Task Save()
         {
             OriginalEmployee = new EmployeeDto
@@ -181,7 +182,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 MessageBox.Show("Ошибка обновления сотрудника");
             }
         }
-
         private async Task LoadDateBase()
         {
             Logger.Info("Начало выполнения LoadDateBase");
@@ -226,7 +226,6 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             return this.WhenAnyValue(vm => vm.SelectedEmployee)
                 .Select(selectedEmployee => selectedEmployee != null);
         }
-
         private IObservable<bool> CanSave()
         {
 
@@ -254,37 +253,45 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             ;
         }
 
-    private void DismissEmployee()
-    {
-        EditEmployee();
-        IsDismiss = true;
-        IsActiveButtonEdit = false;
-        DateMissed = DateTime.Now;
-    }
+        private void DismissEmployee()
+        {
+            PrepareEmployeeForm("Увольнение сотрудника", false);
+            IsDismiss = true;
+            DateMissed = DateTime.Now;
+        }
 
-    private void EditEmployee()
+        private void EditEmployee()
+        {
+            PrepareEmployeeForm("Редактирование данных сотрудника", true);
+            SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee?.Department);
+            SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee?.Position);
+
+            if (SelectedEmployee != null)
+            {
+                Name = SelectedEmployee.Name;
+                Surname = SelectedEmployee.Surname;
+                Patronymic = SelectedEmployee.Patronymic;
+                HireDate = SelectedEmployee.HireDate;
+            }
+        }
+
+        private void PrepareEmployeeForm(string title, bool isEditMode)
         {
             Reset();
+            FormTitle = title;
             IsOpenWindowEdit = true;
-            IsActiveButtonEdit = true;
-
-            SelectedDepartment = DepartmentsList.FirstOrDefault(x => x.Value == SelectedEmployee!.Department);
-            SelectedPosition = PositionList.FirstOrDefault(x => x.Value == SelectedEmployee!.Position);
-
-            Name = SelectedEmployee!.Name;
-            Surname = SelectedEmployee!.Surname;
-            Patronymic = SelectedEmployee.Patronymic;
-            HireDate = SelectedEmployee.HireDate;
-
+            IsActiveButtonEdit = isEditMode;
         }
+
         private void Back()
         {
             Reset();
-            IsOpenWindowAllEmployee = true;
             IsActiveButtonEdit = true;
+            IsOpenWindowAllEmployee = true;
             SelectedEmployee = null;
             OriginalEmployee = null;
         }
+
         private void Reset()
         {
             IsOpenWindowEdit = false;

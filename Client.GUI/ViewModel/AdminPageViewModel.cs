@@ -47,12 +47,21 @@ namespace Client.GUI.ViewModel
                 IsOpenAddEmployeeCommand = true;
             });
 
-            //AddEmployeeCommand = ReactiveCommand.Create(OpenAddEmployeePage);
+            AllEmployeeCommand.ThrownExceptions.Subscribe(ex =>
+            {
+                Logger.Error(ex, "Ошибка в AllEmployeeCommand");
+            });
+
+            AddEmployeeCommand.ThrownExceptions.Subscribe(ex =>
+            {
+                Logger.Error(ex, "Ошибка в AddEmployeeCommand");
+            });
 
             ExitCommand = ReactiveCommand.Create(ExecExit);
 
 
             AllEmployeeCommand.Execute().Subscribe();
+
         }
 
         private IObservable<bool> CanLoadEmployee()

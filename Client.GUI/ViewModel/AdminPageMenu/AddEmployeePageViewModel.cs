@@ -4,6 +4,8 @@ using System.Windows;
 using Models;
 using ReactiveUI.Fody.Helpers;
 using NLog;
+using System.Reactive.Disposables;
+using System;
 
 namespace Client.GUI.ViewModel.AdminPageMenu
 {
@@ -11,13 +13,14 @@ namespace Client.GUI.ViewModel.AdminPageMenu
     {
         //Логгер
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+      
 
         [Reactive] public string Name { get; set; } = "Колодин";
         [Reactive] public string Surname { get; set; } = "Александр";
         [Reactive] public string? Patronymic { get; set; } = "Владимирович";
         [Reactive] public DateTime HireDate { get; set; } = DateTime.Now;
-        public List<KeyValuePair<int, string>> DepartmentsList { get; set; } = [];
-        public List<KeyValuePair<int, string>> PositionList { get; set; } = [];
+        public List<KeyValuePair<int, string>>? DepartmentsList { get; set; } = [];
+        public List<KeyValuePair<int, string>>? PositionList { get; set; } = [];
         [Reactive] public KeyValuePair<int, string> SelectedDepartment { get; set; }
         [Reactive] public KeyValuePair<int, string> SelectedPosition { get; set; }
         public ReactiveCommand<Unit, Unit> SaveCommand { get; }
@@ -29,15 +32,27 @@ namespace Client.GUI.ViewModel.AdminPageMenu
             SaveCommand = ReactiveCommand.CreateFromTask(Save,CanSave());
 
             LoadCommand= ReactiveCommand.CreateFromTask(LoadDateBase);
-            LoadCommand.Execute().Subscribe();
-        }
-       
 
+            LoadCommand.Execute().Subscribe(); ;
+        }
+
+        private async void Init()
+        {
+            await LoadDateBase();
+        }
 
         private async Task LoadDateBase()
         {
             try
             {
+                Logger.Info("Начало загрузки базы данных...");
+
+                if (ManagerHttp?.DepartmentHttpClient == null || ManagerHttp?.PositionHttpClient == null)
+                {
+                    Logger.Error("ManagerHttp не инициализирован!");
+                    return;
+                }
+
                 // Запускаем запросы одновременно
                 var departmentsTask = ManagerHttp.DepartmentHttpClient.GetDepartmentsAsync();
                 var positionTask = ManagerHttp.PositionHttpClient.GetPositionsAsync();
@@ -45,15 +60,16 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                 // Дожидаемся завершения всех запросов
                 await Task.WhenAll(departmentsTask, positionTask);
 
-                var departmentsList = departmentsTask.Result;
-                var positionList = positionTask.Result;
+                var departmentsList = departmentsTask.Result ?? new List<Department>();
+                var positionList = positionTask.Result ?? new List<Position>();
 
                 if (positionList.Any() || departmentsList.Any())
                 {
                     PositionList.Clear();
                     DepartmentsList.Clear();
-                    PositionList = positionList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
-                    DepartmentsList = departmentsList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)).ToList();
+
+                    PositionList.AddRange(positionList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)));
+                    DepartmentsList.AddRange(departmentsList.Select(x => new KeyValuePair<int, string>(x.Id, x.Name)));
 
                     SelectedPosition = PositionList.FirstOrDefault();
                     SelectedDepartment = DepartmentsList.FirstOrDefault();
@@ -63,12 +79,11 @@ namespace Client.GUI.ViewModel.AdminPageMenu
                     Logger.Warn("Ошибка загрузки данных: сервер вернул пустые списки");
                     MessageBox.Show("Ошибка загрузки данных: сервер вернул пустые списки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Logger.Error($"Ошибка загрузки данных: {ex}");
-                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Error(e, "Ошибка при загрузке данных");
+                MessageBox.Show($"Ошибка при загрузке данных: {e.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

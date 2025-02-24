@@ -103,7 +103,7 @@
                 Visibility="{Binding IsOpenWindowEdit,Converter={StaticResource BoolToVis}}"
                 Grid.Row="1">
 
-                <component:EmployeeForm FormTitle="Редактирование сотрудника"/>
+                <component:EmployeeForm/>
 
             </Grid>
 

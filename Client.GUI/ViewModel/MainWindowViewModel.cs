@@ -56,6 +56,16 @@ namespace Client.GUI.ViewModel
                 throw new InvalidOperationException($"DataContext в {typeof(TView)} не является {typeof(TViewModel)}");
             }
         }
+        private void InitializeAndSubscribeToContentChanges<TViewModel>()
+            where TViewModel : class
+        {
+            var viewModel = GetPage<TViewModel>();
+            SubscribeToContentChanged(viewModel, (newContent, newTitle) =>
+            {
+                CurrentContent = newContent;
+                Title = newTitle;
+            });
+        }
 
     }
 }

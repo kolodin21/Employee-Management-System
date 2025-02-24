@@ -4,61 +4,6 @@ using NLog;
 using Server.BL;
 using System.Net;
 
-#region MyRegion
-
-//var builder = WebApplication.CreateBuilder(args);
-
-//var app = builder.Build();
-
-//app.UseHttpsRedirection();
-
-//var Logger = LogManager.GetCurrentClassLogger();
-
-
-//var employeeService = new EmployeeService();
-//var departmentService = new DepartmentService();
-//var positionService = new PositionService();
-//var leaveService = new LeaveService();
-//var reportSearchService = new ReportSearchService();
-
-//#region EmployeeRepository
-//app.MapPost("/employees/new", async (Employee emp) => await employeeService.AddEmployeeAsync(emp));
-
-//app.MapGet("/employee/{id:int}", async (int id) => await employeeService.GetEmployeeByIdAsync(id));
-
-//app.MapGet("/department/{id:int}/employees", async (int id) => await employeeService.GetEmployeesByDepartmentAsync(id));
-//app.MapPut("/employees", async (Employee emp) => await employeeService.UpdateEmployeeAsync(emp));
-//app.MapDelete("/employee/{id:int}", async (int id) => await employeeService.DeleteEmployeeAsync(id));
-//#endregion
-
-
-//#region PositionRepository
-//app.MapPost("/position/new", async (Position position) => await positionService.AddPositionAsync(position.Name));
-
-//app.MapGet("/positions", async () => await positionService.GetPositionsAsync());
-//app.MapPut("/positions/{id:int}", async (int id, string newName) => await positionService.UpdatePositionAsync(id,newName));
-//app.MapDelete("/positions/{id:int}", async (int id) => await positionService.DeletePositionAsync(id));
-//#endregion
-
-//#region LeaveRepository
-//app.MapPost("/leave/new", async (Leave leave) => await leaveService.AddLeaveAsync(leave));
-
-//app.MapPut("/leaves/{leaveId:int}", async (int leaveId) => await leaveService.CancelLeaveAsync(leaveId));
-//app.MapGet("/leaves/{id:int}", async (int id) => await leaveService.GetLeavesByEmployeeAsync(id));
-//app.MapGet("/leaves/{start:datetime}/{end:datetime}", async (DateTime start, DateTime end) => await leaveService.GetLeavesByDateRangeAsync(start,end));
-//app.MapGet("/leaves/remainder/{employeeId:int}", async (int employeeId) => await leaveService.GetLeaveBalanceAsync(employeeId));
-//#endregion
-
-//#region ReportSearchRepository
-//app.MapGet("/report/employee/{employeeId:int}", async (int employeeId) => await reportSearchService.GenerateEmployeeReportAsync(employeeId));
-//app.MapGet("/report/department/{departmentId:int}", async (int departmentId) => await reportSearchService.GenerateDepartmentReportAsync(departmentId));
-//app.MapGet("/reports", async (DateTime start, DateTime end) => await reportSearchService.GenerateLeaveStatisticsAsync(start,end));
-//app.MapGet("reports/search", async (string lastName, string firstName) => await reportSearchService.SearchEmployeesAsync(lastName,firstName ?? ""));
-//#endregion
-
-//app.Run();
-#endregion
-
 
 var builder = WebApplication.CreateBuilder(args);
 
