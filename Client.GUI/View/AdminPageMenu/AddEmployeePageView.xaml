@@ -45,7 +45,7 @@
               Grid.Row="0"
               Content="Все сотрудники компании "
               Style="{StaticResource Heading}"/>
-
+            
             <Grid 
               Grid.Row="1">
                 <component:EmployeeForm FormTitle="Добавление нового сотрудника" />

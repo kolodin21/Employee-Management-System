@@ -11,6 +11,7 @@ public class EmployeeRepository : BaseRepository
 
         const string sql = "SELECT function_add_employee(@name,@surname,@patronymic,@department_id,@position_id,@hire_date)";
 
+
         await using var command = new NpgsqlCommand(sql, connection);
 
         command.Parameters.AddWithValue("@name", employee.Name);

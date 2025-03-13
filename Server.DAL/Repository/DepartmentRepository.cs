@@ -17,7 +17,7 @@ public class DepartmentRepository : BaseRepository
         command.Parameters.AddWithValue("@dep_name", name);
 
         await connection.OpenAsync();
-
+        
         return (bool)(await command.ExecuteScalarAsync() ?? false);
     }
 
@@ -41,9 +41,11 @@ public class DepartmentRepository : BaseRepository
         const string sql = "SELECT * FROM table_departments";
 
         await using var command = new NpgsqlCommand(sql, connection);
+
         await connection.OpenAsync();
 
         await using var reader = await command.ExecuteReaderAsync();
+
         var departments = new List<Department>();
 
         while (await reader.ReadAsync())
